@@ -1,6 +1,7 @@
 /**
- * app.js - Main Application Orchestrator
- * Asynchronously loads Knowledge Base JSON files and binds input bar & prompt chip listeners.
+ * app.js - Main Application Router & Feature Controller
+ * Manages async Knowledge Base loading, SPA page routing for 5 views,
+ * Explore browsing, Real-time search, Important Questions, and Mobile Drawer.
  */
 
 // Global Knowledge Base Object
@@ -12,13 +13,48 @@ window.knowledgeBase = {
   unit5: []
 };
 
-/**
- * Initializes application on DOM load.
- */
+// Unit Metadata Configuration
+const unitMetadata = {
+  unit1: { number: "Unit I", title: "Introduction & Problem-Solving Agents", desc: "AI definitions, PEAS framework, task environments, and agent architectures." },
+  unit2: { number: "Unit II", title: "Search Strategies & Constraint Satisfaction", desc: "Uninformed & informed search, A* algorithm, Minimax, Alpha-Beta pruning, and CSPs." },
+  unit3: { number: "Unit III", title: "Knowledge Representation & Logical Reasoning", desc: "Logical agents, Propositional logic, First-Order Logic, Unification, Chaining, and Resolution." },
+  unit4: { number: "Unit IV", title: "Ontologies, Vision & Pattern Recognition", desc: "Ontological engineering, situation calculus, Speech & Face recognition, and Image processing." },
+  unit5: { number: "Unit V", title: "AI Applications & Natural Language Processing", desc: "Expert systems, System shells, Language models, Information Retrieval (TF-IDF), and NLP parsing." }
+};
+
+// Curated Important Questions
+const importantQuestions = [
+  { unit: "Unit I", question: "What is an Intelligent Agent and how is the PEAS framework used to design it?", query: "Explain PEAS framework and Intelligent Agents" },
+  { unit: "Unit I", question: "Distinguish between Rationality and Omniscience in AI agent design.", query: "Concept of Rationality and Omniscience" },
+  { unit: "Unit I", question: "Compare Simple Reflex Agents, Model-Based Reflex Agents, and Goal-Based Agents.", query: "Structure of Agents and agent architectures" },
+  { unit: "Unit II", question: "Compare Breadth-First Search (BFS) and Depth-First Search (DFS) in space and time complexity.", query: "Compare BFS and DFS search strategies" },
+  { unit: "Unit II", question: "Explain the A* Search algorithm and conditions for heuristic admissibility.", query: "What is A* search and heuristic admissibility?" },
+  { unit: "Unit II", question: "Explain the Minimax algorithm and how Alpha-Beta Pruning optimizes game search.", query: "Explain Minimax and Alpha-Beta Pruning" },
+  { unit: "Unit II", question: "How does Backtracking search solve Constraint Satisfaction Problems (CSPs)?", query: "Backtracking search for CSP" },
+  { unit: "Unit III", question: "Explain Knowledge-Based Agents (KBAs) and the TELL and ASK interface operations.", query: "Explain Knowledge-Based Agents" },
+  { unit: "Unit III", question: "Compare Propositional Logic and First-Order Logic (FOL) in expressiveness.", query: "Compare Propositional Logic and First-Order Logic" },
+  { unit: "Unit III", question: "Explain the Unification algorithm and the Most General Unifier (MGU).", query: "Explain Unification algorithm" },
+  { unit: "Unit III", question: "Explain Resolution proof by refutation and Conjunctive Normal Form (CNF).", query: "Resolution proof by refutation" },
+  { unit: "Unit IV", question: "What is Ontological Engineering? Explain Upper and Domain Ontologies.", query: "What is Ontological Engineering?" },
+  { unit: "Unit IV", question: "Explain Voice Recognition: MFCC feature extraction and acoustic modeling.", query: "Explain Voice Recognition" },
+  { unit: "Unit IV", question: "Explain Morphological Image Processing operations: Erosion and Dilation.", query: "Morphological Image Processing" },
+  { unit: "Unit V", question: "Explain Expert Systems architecture and how Expert System Shells decouple rules.", query: "Explain Expert Systems and Expert System Shells" },
+  { unit: "Unit V", question: "Explain Information Retrieval, Inverted Index data structures, and TF-IDF.", query: "Explain Information Retrieval and Inverted Index" },
+  { unit: "Unit V", question: "Explain Syntactic Parsing, Parse Trees, and Context-Free Grammars (CFGs).", query: "Syntactic Processing and Parsing in NLP" }
+];
+
+/* --------------------------------------------------------------------------
+   Initialization on DOM Load
+   -------------------------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
   loadKnowledgeBase();
+  initNavigation();
+  initMobileDrawer();
   initChatForm();
-  initSuggestedPromptChips();
+  initPromptChips();
+  initExploreView();
+  initSearchView();
+  initImportantQuestionsView();
 });
 
 /**
@@ -50,14 +86,81 @@ async function loadKnowledgeBase() {
     );
 
     await Promise.all(fetchPromises);
+    renderUnitsGrid();
   } catch (error) {
-    console.error("Knowledge base initialization error:", error);
+    console.error("Knowledge base loading error:", error);
   }
 }
 
+/* --------------------------------------------------------------------------
+   SPA Page Routing & Navigation
+   -------------------------------------------------------------------------- */
 /**
- * Initializes input form submit listener.
+ * Switches the active page view and updates sidebar navigation highlight.
+ * @param {string} pageId - Target page ID (chat, explore, search, important, about).
  */
+function showPage(pageId) {
+  const pages = document.querySelectorAll('.page-view');
+  pages.forEach(p => p.classList.remove('active'));
+
+  const targetPage = document.getElementById(`page-${pageId}`);
+  if (targetPage) {
+    targetPage.classList.add('active');
+  }
+
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    if (item.getAttribute('data-page') === pageId) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+
+  closeMobileDrawer();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function initNavigation() {
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const pageId = item.getAttribute('data-page');
+      showPage(pageId);
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Drawer Navigation
+   -------------------------------------------------------------------------- */
+function initMobileDrawer() {
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+
+  if (hamburgerBtn && sidebar && overlay) {
+    hamburgerBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('mobile-open');
+      overlay.classList.toggle('mobile-open');
+    });
+
+    overlay.addEventListener('click', closeMobileDrawer);
+  }
+}
+
+function closeMobileDrawer() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (sidebar && overlay) {
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('mobile-open');
+  }
+}
+
+/* --------------------------------------------------------------------------
+   View 1: Chat View & Prompt Chips
+   -------------------------------------------------------------------------- */
 function initChatForm() {
   const form = document.getElementById('chat-form');
   const input = document.getElementById('chat-input');
@@ -74,23 +177,259 @@ function initChatForm() {
   }
 }
 
-/**
- * Binds click events to the 6 prompt chips above the input bar.
- * Clicking a chip populates the input field and auto-submits the query.
- */
-function initSuggestedPromptChips() {
-  const promptChips = document.querySelectorAll('.prompt-chip');
+function initPromptChips() {
+  const chips = document.querySelectorAll('.prompt-chip');
   const input = document.getElementById('chat-input');
 
-  promptChips.forEach(chip => {
+  chips.forEach(chip => {
     chip.addEventListener('click', (e) => {
       e.preventDefault();
       const query = chip.getAttribute('data-query');
       if (query) {
+        showPage('chat');
         if (input) input.value = query;
         processUserMessage(query);
         if (input) input.value = '';
       }
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   View 2: Explore Units Logic
+   -------------------------------------------------------------------------- */
+function renderUnitsGrid() {
+  const grid = document.getElementById('units-grid');
+  if (!grid) return;
+
+  grid.innerHTML = Object.keys(unitMetadata).map(unitKey => {
+    const meta = unitMetadata[unitKey];
+    const count = (window.knowledgeBase[unitKey] || []).length;
+    return `
+      <div class="card unit-card" data-unitkey="${unitKey}">
+        <div class="unit-badge">${meta.number} • ${count} Topics</div>
+        <h2>${meta.title}</h2>
+        <p>${meta.desc}</p>
+      </div>
+    `;
+  }).join('');
+
+  const cards = grid.querySelectorAll('.unit-card');
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const unitKey = card.getAttribute('data-unitkey');
+      openUnitTopicsView(unitKey);
+    });
+  });
+}
+
+function openUnitTopicsView(unitKey) {
+  const meta = unitMetadata[unitKey];
+  const topics = window.knowledgeBase[unitKey] || [];
+
+  const unitsListView = document.getElementById('units-list-view');
+  const topicsView = document.getElementById('unit-topics-view');
+  const topicDetailView = document.getElementById('explore-topic-detail');
+  const titleElem = document.getElementById('current-unit-title');
+  const topicsGrid = document.getElementById('topics-grid');
+
+  if (titleElem) titleElem.textContent = `${meta.number}: ${meta.title}`;
+
+  if (topicsGrid) {
+    topicsGrid.innerHTML = topics.map(topic => `
+      <div class="card topic-card" data-topicid="${topic.id}">
+        <h3>${sanitizeString(topic.title)}</h3>
+        <p>${sanitizeString(topic.overview)}</p>
+      </div>
+    `).join('');
+
+    const cards = topicsGrid.querySelectorAll('.topic-card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const topicId = card.getAttribute('data-topicid');
+        openExploreTopicDetail(topicId);
+      });
+    });
+  }
+
+  unitsListView.classList.add('hidden');
+  topicsView.classList.remove('hidden');
+  topicDetailView.classList.add('hidden');
+}
+
+function openExploreTopicDetail(topicId) {
+  const topicObj = findTopicById(topicId);
+  if (!topicObj) return;
+
+  const topicsView = document.getElementById('unit-topics-view');
+  const detailView = document.getElementById('explore-topic-detail');
+  const contentElem = document.getElementById('explore-topic-content');
+
+  if (contentElem) {
+    contentElem.innerHTML = buildTopicResponse(topicObj);
+    attachBubbleChipListeners(contentElem);
+  }
+
+  topicsView.classList.add('hidden');
+  detailView.classList.remove('hidden');
+}
+
+function initExploreView() {
+  const backToUnitsBtn = document.getElementById('back-to-units-btn');
+  const backToTopicsBtn = document.getElementById('back-to-topics-btn');
+
+  if (backToUnitsBtn) {
+    backToUnitsBtn.addEventListener('click', () => {
+      document.getElementById('units-list-view').classList.remove('hidden');
+      document.getElementById('unit-topics-view').classList.add('hidden');
+      document.getElementById('explore-topic-detail').classList.add('hidden');
+    });
+  }
+
+  if (backToTopicsBtn) {
+    backToTopicsBtn.addEventListener('click', () => {
+      document.getElementById('unit-topics-view').classList.remove('hidden');
+      document.getElementById('explore-topic-detail').classList.add('hidden');
+    });
+  }
+}
+
+/* --------------------------------------------------------------------------
+   View 3: Search Topics Logic
+   -------------------------------------------------------------------------- */
+function initSearchView() {
+  const input = document.getElementById('search-input');
+  const backBtn = document.getElementById('back-to-search-btn');
+
+  if (input) {
+    input.addEventListener('input', () => {
+      const term = input.value.trim();
+      if (term.length > 0) {
+        performSearch(term);
+      } else {
+        resetSearchUI();
+      }
+    });
+  }
+
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      document.getElementById('search-main-view').classList.remove('hidden');
+      document.getElementById('search-topic-detail').classList.add('hidden');
+    });
+  }
+}
+
+function performSearch(term) {
+  const results = searchKnowledgeBase(term);
+  const statsElem = document.getElementById('search-stats');
+  const gridElem = document.getElementById('search-results-grid');
+  const mainView = document.getElementById('search-main-view');
+  const detailView = document.getElementById('search-topic-detail');
+
+  mainView.classList.remove('hidden');
+  detailView.classList.add('hidden');
+
+  if (statsElem) {
+    statsElem.textContent = `Found ${results.length} matching topics for "${term}":`;
+  }
+
+  if (gridElem) {
+    if (results.length === 0) {
+      gridElem.innerHTML = `<p class="search-empty-state" style="color: var(--text-muted); font-size: 15px;">No topics found. Try a different keyword.</p>`;
+      return;
+    }
+
+    gridElem.innerHTML = results.map(item => `
+      <div class="card result-card" data-topicid="${item.topic.id}">
+        <span class="result-unit-badge">${unitMetadata[item.unitKey].number}</span>
+        <h3>${sanitizeString(item.topic.title)}</h3>
+        <p>${sanitizeString(item.topic.overview)}</p>
+      </div>
+    `).join('');
+
+    const cards = gridElem.querySelectorAll('.result-card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const topicId = card.getAttribute('data-topicid');
+        openSearchTopicDetail(topicId);
+      });
+    });
+  }
+}
+
+function openSearchTopicDetail(topicId) {
+  const topicObj = findTopicById(topicId);
+  if (!topicObj) return;
+
+  const mainView = document.getElementById('search-main-view');
+  const detailView = document.getElementById('search-topic-detail');
+  const contentElem = document.getElementById('search-topic-content');
+
+  if (contentElem) {
+    contentElem.innerHTML = buildTopicResponse(topicObj);
+    attachBubbleChipListeners(contentElem);
+  }
+
+  mainView.classList.add('hidden');
+  detailView.classList.remove('hidden');
+}
+
+function resetSearchUI() {
+  const statsElem = document.getElementById('search-stats');
+  const gridElem = document.getElementById('search-results-grid');
+  if (statsElem) statsElem.textContent = 'Type a keyword above to search across all units.';
+  if (gridElem) gridElem.innerHTML = '';
+}
+
+function searchKnowledgeBase(term) {
+  if (!term) return [];
+  const cleanTerm = term.toLowerCase().trim();
+  const results = [];
+
+  for (const unitKey in window.knowledgeBase) {
+    const topics = window.knowledgeBase[unitKey];
+    if (Array.isArray(topics)) {
+      topics.forEach(topic => {
+        const titleMatch = topic.title && topic.title.toLowerCase().includes(cleanTerm);
+        const conceptMatch = topic.key_concepts && topic.key_concepts.some(c => c.toLowerCase().includes(cleanTerm));
+        const overviewMatch = topic.overview && topic.overview.toLowerCase().includes(cleanTerm);
+
+        if (titleMatch || conceptMatch || overviewMatch) {
+          results.push({ unitKey, topic });
+        }
+      });
+    }
+  }
+
+  return results;
+}
+
+/* --------------------------------------------------------------------------
+   View 4: Important Questions Logic
+   -------------------------------------------------------------------------- */
+function initImportantQuestionsView() {
+  const listElem = document.getElementById('important-questions-list');
+  if (!listElem) return;
+
+  listElem.innerHTML = importantQuestions.map((qObj, index) => `
+    <div class="card important-card" data-query="${qObj.query}">
+      <div>
+        <div class="question-text">${index + 1}. ${qObj.question}</div>
+        <div class="question-unit">${qObj.unit}</div>
+      </div>
+    </div>
+  `).join('');
+
+  const cards = listElem.querySelectorAll('.important-card');
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const query = card.getAttribute('data-query');
+      showPage('chat');
+      const input = document.getElementById('chat-input');
+      if (input) input.value = query;
+      processUserMessage(query);
+      if (input) input.value = '';
     });
   });
 }
