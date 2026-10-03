@@ -3,243 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Knowledge Assistant</title>
-    <meta name="description" content="A warm, minimal, single-screen AI Knowledge Assistant.">
+    <title>AI Assistant</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="app-container">
-        <!-- Mobile Top Bar with Hamburger Button -->
-        <header id="mobile-header">
-            <button id="hamburger-btn" aria-label="Toggle navigation menu">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-            <span class="mobile-wordmark">AI Assistant</span>
-        </header>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">AI Assistant</div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-target="view-chat">Chat</a>
+      <a href="#" class="nav-item" data-target="view-explore">Explore</a>
+      <a href="#" class="nav-item" data-target="view-search">Search</a>
+      <a href="#" class="nav-item" data-target="view-important">Important</a>
+      <a href="#" class="nav-item" data-target="view-about">About</a>
+    </nav>
+  </aside>
 
-        <!-- Sidebar Overlay for Mobile -->
-        <div id="sidebar-overlay"></div>
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- CHAT VIEW -->
+    <section id="view-chat" class="page active">
+       <div class="chat-page-content">
+          <h1 class="chat-title">AI Knowledge Assistant</h1>
 
-        <!-- Left Navigation Sidebar -->
-        <nav id="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-wordmark">AI Assistant</div>
-            </div>
+          <div id="chat-window" class="chat-window">
+             <!-- Chat messages appended dynamically here -->
+          </div>
 
-            <ul class="nav-links">
-                <li>
-                    <button class="nav-item active" data-page="chat" title="Chat">
-                        <span class="nav-badge">C</span>
-                        <span class="nav-label">Chat</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="nav-item" data-page="explore" title="Explore Units">
-                        <span class="nav-badge">E</span>
-                        <span class="nav-label">Explore</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="nav-item" data-page="search" title="Search Topics">
-                        <span class="nav-badge">S</span>
-                        <span class="nav-label">Search</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="nav-item" data-page="important" title="Important Questions">
-                        <span class="nav-badge">I</span>
-                        <span class="nav-label">Important</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="nav-item" data-page="about" title="About">
-                        <span class="nav-badge">A</span>
-                        <span class="nav-label">About</span>
-                    </button>
-                </li>
-            </ul>
-        </nav>
+          <div class="chat-footer">
+             <div class="suggested-chips-row" id="suggested-chips-row">
+                <button class="prompt-chip" data-query="What is Artificial Intelligence?">What is Artificial Intelligence?</button>
+                <button class="prompt-chip" data-query="Explain BFS and DFS">Explain BFS and DFS</button>
+                <button class="prompt-chip" data-query="What is a heuristic function?">What is a heuristic function?</button>
+                <button class="prompt-chip" data-query="Explain the Minimax algorithm">Explain the Minimax algorithm</button>
+                <button class="prompt-chip" data-query="What is First-Order Logic?">What is First-Order Logic?</button>
+                <button class="prompt-chip" data-query="What is an expert system?">What is an expert system?</button>
+             </div>
 
-        <!-- Main Content Area -->
-        <main id="main-content">
-            <!-- View 1: Chat View (Default) -->
-            <section id="page-chat" class="page-view active">
-                <div class="chat-container">
-                    <header class="view-header text-center">
-                        <h1 class="view-title">AI Knowledge Assistant</h1>
-                    </header>
+             <form id="chat-form" class="chat-input-bar">
+                <input type="text" id="chat-input" placeholder="Ask anything..." autocomplete="off" aria-label="Ask anything">
+                <button type="submit" id="chat-send-btn" aria-label="Send message">
+                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="19" x2="12" y2="5"></line>
+                      <polyline points="5 12 12 5 19 12"></polyline>
+                   </svg>
+                </button>
+             </form>
+          </div>
+       </div>
+    </section>
 
-                    <div id="chat-window" class="chat-window">
-                        <!-- Message bubbles appended here -->
-                    </div>
+    <!-- EXPLORE VIEW -->
+    <section id="view-explore" class="page" style="display: none;">
+       <div class="view-content">
+          <div id="units-list-view">
+             <h1 class="page-title">Explore Units</h1>
+             <div class="units-grid" id="units-grid"></div>
+          </div>
 
-                    <div class="chat-footer">
-                        <div class="suggested-chips-row" id="suggested-chips-row">
-                            <button class="prompt-chip" data-query="What is Artificial Intelligence?">What is Artificial Intelligence?</button>
-                            <button class="prompt-chip" data-query="Explain BFS and DFS">Explain BFS and DFS</button>
-                            <button class="prompt-chip" data-query="What is a heuristic function?">What is a heuristic function?</button>
-                            <button class="prompt-chip" data-query="Explain the Minimax algorithm">Explain the Minimax algorithm</button>
-                            <button class="prompt-chip" data-query="What is First-Order Logic?">What is First-Order Logic?</button>
-                            <button class="prompt-chip" data-query="What is an expert system?">What is an expert system?</button>
-                        </div>
+          <div id="unit-topics-view" style="display: none;">
+             <button id="back-to-units-btn" class="back-link">← Back to Units</button>
+             <h1 class="page-title" id="current-unit-title">Unit Topics</h1>
+             <div class="topics-grid" id="topics-grid"></div>
+          </div>
 
-                        <form id="chat-form" class="chat-input-bar">
-                            <input type="text" id="chat-input" placeholder="Ask anything..." autocomplete="off" aria-label="Ask anything">
-                            <button type="submit" id="chat-send-btn" aria-label="Send message">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="12" y1="19" x2="12" y2="5"></line>
-                                    <polyline points="5 12 12 5 19 12"></polyline>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
+          <div id="explore-topic-detail" style="display: none;">
+             <button id="back-to-topics-btn" class="back-link">← Back to Topics</button>
+             <div id="explore-topic-content" class="card topic-detail-card"></div>
+          </div>
+       </div>
+    </section>
+
+    <!-- SEARCH VIEW -->
+    <section id="view-search" class="page" style="display: none;">
+       <div class="view-content">
+          <div id="search-main-view">
+             <h1 class="page-title">Search Topics</h1>
+             <div class="search-box-wrapper">
+                <input type="text" id="search-input" class="search-input" placeholder="Type a keyword like Minimax, BFS, Resolution..." aria-label="Search topics">
+             </div>
+             <div id="search-stats" class="search-stats">Type a keyword above to search across all units.</div>
+             <div class="search-results-grid" id="search-results-grid"></div>
+          </div>
+
+          <div id="search-topic-detail" style="display: none;">
+             <button id="back-to-search-btn" class="back-link">← Back to Search Results</button>
+             <div id="search-topic-content" class="card topic-detail-card"></div>
+          </div>
+       </div>
+    </section>
+
+    <!-- IMPORTANT VIEW -->
+    <section id="view-important" class="page" style="display: none;">
+       <div class="view-content">
+          <h1 class="page-title">Important Questions</h1>
+          <div class="important-questions-list" id="important-questions-list"></div>
+       </div>
+    </section>
+
+    <!-- ABOUT VIEW -->
+    <section id="view-about" class="page" style="display: none;">
+       <div class="view-content">
+          <h1 class="page-title">About</h1>
+
+          <div class="about-sections">
+             <article class="card">
+                <h2 class="card-title">Project Title</h2>
+                <p>AI Knowledge Assistant: A Knowledge-Based Learning and Reasoning System</p>
+             </article>
+
+             <article class="card">
+                <h2 class="card-title">Objective</h2>
+                <p>To provide a clean, accessible, and self-paced environment for students to explore core Artificial Intelligence principles, state-space search algorithms, logical reasoning, knowledge representation, and natural language techniques.</p>
+             </article>
+
+             <article class="card">
+                <h2 class="card-title">Methodology</h2>
+                <p>The system operates on a 100% client-side local Knowledge Base and a deterministic pattern-matching Rule Engine. It processes inputs locally without external API calls or large language model services.</p>
+             </article>
+
+             <article class="card">
+                <h2 class="card-title">Technologies Used</h2>
+                <div class="tech-tags">
+                   <span class="tech-tag">HTML5</span>
+                   <span class="tech-tag">Vanilla CSS3</span>
+                   <span class="tech-tag">JavaScript (ES6+)</span>
+                   <span class="tech-tag">Fetch API</span>
+                   <span class="tech-tag">JSON</span>
                 </div>
-            </section>
+             </article>
 
-            <!-- View 2: Explore Units View -->
-            <section id="page-explore" class="page-view">
-                <div class="view-container">
-                    <!-- Units List View -->
-                    <div id="units-list-view">
-                        <header class="view-header">
-                            <h1 class="view-title">Explore Units</h1>
-                        </header>
-                        <div class="units-grid" id="units-grid">
-                            <!-- Populated dynamically in app.js -->
-                        </div>
-                    </div>
-
-                    <!-- Unit Topics View (Hidden by default) -->
-                    <div id="unit-topics-view" class="hidden">
-                        <div class="navigation-link">
-                            <button id="back-to-units-btn" class="btn-text">← Back to Units</button>
-                        </div>
-                        <header class="view-header">
-                            <h1 class="view-title" id="current-unit-title">Unit Topics</h1>
-                        </header>
-                        <div class="topics-grid" id="topics-grid">
-                            <!-- Populated dynamically in app.js -->
-                        </div>
-                    </div>
-
-                    <!-- Topic Detail View (Hidden by default) -->
-                    <div id="explore-topic-detail" class="hidden">
-                        <div class="navigation-link">
-                            <button id="back-to-topics-btn" class="btn-text">← Back to Topics</button>
-                        </div>
-                        <div id="explore-topic-content" class="card topic-detail-card">
-                            <!-- Rendered topic detail -->
-                        </div>
-                    </div>
+             <article class="card">
+                <h2 class="card-title">Documentation</h2>
+                <p>Read the project documentation files:</p>
+                <div class="doc-links">
+                   <a href="docs/project_explanation.md" target="_blank" rel="noopener noreferrer" class="doc-link">
+                      Project Explanation (project_explanation.md) ↗
+                   </a>
+                   <a href="docs/app_workflow.md" target="_blank" rel="noopener noreferrer" class="doc-link">
+                      Application Workflow (app_workflow.md) ↗
+                   </a>
+                   <a href="docs/app_theme.md" target="_blank" rel="noopener noreferrer" class="doc-link">
+                      App Theme Guidelines (app_theme.md) ↗
+                   </a>
                 </div>
-            </section>
+             </article>
+          </div>
+       </div>
+    </section>
+  </main>
 
-            <!-- View 3: Search Topics View -->
-            <section id="page-search" class="page-view">
-                <div class="view-container">
-                    <!-- Search Results View -->
-                    <div id="search-main-view">
-                        <header class="view-header">
-                            <h1 class="view-title">Search Topics</h1>
-                        </header>
-
-                        <div class="search-input-wrapper">
-                            <input type="text" id="search-input" placeholder="Type a keyword like Minimax, BFS, Resolution..." aria-label="Search topics">
-                        </div>
-
-                        <div id="search-stats" class="search-stats">Type a keyword above to search across all units.</div>
-                        <div class="search-results-grid" id="search-results-grid">
-                            <!-- Populated dynamically -->
-                        </div>
-                    </div>
-
-                    <!-- Search Topic Detail View (Hidden by default) -->
-                    <div id="search-topic-detail" class="hidden">
-                        <div class="navigation-link">
-                            <button id="back-to-search-btn" class="btn-text">← Back to Search Results</button>
-                        </div>
-                        <div id="search-topic-content" class="card topic-detail-card">
-                            <!-- Rendered topic detail -->
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- View 4: Important Questions View -->
-            <section id="page-important" class="page-view">
-                <div class="view-container">
-                    <header class="view-header">
-                        <h1 class="view-title">Important Questions</h1>
-                    </header>
-                    <div class="important-questions-list" id="important-questions-list">
-                        <!-- Populated dynamically -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- View 5: About View -->
-            <section id="page-about" class="page-view">
-                <div class="view-container">
-                    <header class="view-header">
-                        <h1 class="view-title">About</h1>
-                    </header>
-
-                    <div class="about-sections">
-                        <article class="card about-card">
-                            <h2>Project Title</h2>
-                            <p>AI Knowledge Assistant: A Knowledge-Based Learning and Reasoning System</p>
-                        </article>
-
-                        <article class="card about-card">
-                            <h2>Objective</h2>
-                            <p>To provide a clean, accessible, and self-paced environment for students to explore core Artificial Intelligence principles, state-space search algorithms, logical reasoning, knowledge representation, and natural language techniques.</p>
-                        </article>
-
-                        <article class="card about-card">
-                            <h2>Methodology</h2>
-                            <p>The system operates on a 100% client-side local Knowledge Base and a deterministic pattern-matching Rule Engine. It processes inputs locally without external API calls or large language model services.</p>
-                        </article>
-
-                        <article class="card about-card">
-                            <h2>Technologies Used</h2>
-                            <div class="tech-tags">
-                                <span class="tech-tag">HTML5</span>
-                                <span class="tech-tag">Vanilla CSS3</span>
-                                <span class="tech-tag">JavaScript (ES6+)</span>
-                                <span class="tech-tag">Fetch API</span>
-                                <span class="tech-tag">JSON</span>
-                            </div>
-                        </article>
-
-                        <article class="card about-card">
-                            <h2>Documentation</h2>
-                            <p>Read the project documentation files:</p>
-                            <div class="doc-links">
-                                <a href="docs/project_explanation.md" target="_blank" rel="noopener noreferrer" class="doc-link">
-                                    Project Explanation (project_explanation.md) ↗
-                                </a>
-                                <a href="docs/app_workflow.md" target="_blank" rel="noopener noreferrer" class="doc-link">
-                                    Application Workflow (app_workflow.md) ↗
-                                </a>
-                                <a href="docs/app_theme.md" target="_blank" rel="noopener noreferrer" class="doc-link">
-                                    App Theme Guidelines (app_theme.md) ↗
-                                </a>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Application JavaScript Modules -->
-    <script src="js/rules.js"></script>
-    <script src="js/responses.js"></script>
-    <script src="js/chatbot.js"></script>
-    <script src="js/app.js"></script>
+  <!-- JavaScript Files -->
+  <script src="js/rules.js"></script>
+  <script src="js/responses.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

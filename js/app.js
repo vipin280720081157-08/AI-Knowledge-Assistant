@@ -1,10 +1,7 @@
 /**
- * app.js - Main Application Router & Feature Controller
- * Manages async Knowledge Base loading, SPA page routing for 5 views,
- * Explore browsing, Real-time search, Important Questions, and Mobile Drawer.
+ * app.js - SPA Router & Feature Controller
  */
 
-// Global Knowledge Base Object
 window.knowledgeBase = {
   unit1: [],
   unit2: [],
@@ -13,7 +10,6 @@ window.knowledgeBase = {
   unit5: []
 };
 
-// Unit Metadata Configuration
 const unitMetadata = {
   unit1: { number: "Unit I", title: "Introduction & Problem-Solving Agents", desc: "AI definitions, PEAS framework, task environments, and agent architectures." },
   unit2: { number: "Unit II", title: "Search Strategies & Constraint Satisfaction", desc: "Uninformed & informed search, A* algorithm, Minimax, Alpha-Beta pruning, and CSPs." },
@@ -22,7 +18,6 @@ const unitMetadata = {
   unit5: { number: "Unit V", title: "AI Applications & Natural Language Processing", desc: "Expert systems, System shells, Language models, Information Retrieval (TF-IDF), and NLP parsing." }
 };
 
-// Curated Important Questions
 const importantQuestions = [
   { unit: "Unit I", question: "What is an Intelligent Agent and how is the PEAS framework used to design it?", query: "Explain PEAS framework and Intelligent Agents" },
   { unit: "Unit I", question: "Distinguish between Rationality and Omniscience in AI agent design.", query: "Concept of Rationality and Omniscience" },
@@ -43,13 +38,9 @@ const importantQuestions = [
   { unit: "Unit V", question: "Explain Syntactic Parsing, Parse Trees, and Context-Free Grammars (CFGs).", query: "Syntactic Processing and Parsing in NLP" }
 ];
 
-/* --------------------------------------------------------------------------
-   Initialization on DOM Load
-   -------------------------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
   loadKnowledgeBase();
   initNavigation();
-  initMobileDrawer();
   initChatForm();
   initPromptChips();
   initExploreView();
@@ -58,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Asynchronously loads knowledge base JSON files into window.knowledgeBase.
+ * Asynchronously loads JSON knowledge base files.
  */
 async function loadKnowledgeBase() {
   const unitFiles = [
@@ -72,95 +63,69 @@ async function loadKnowledgeBase() {
   try {
     const fetchPromises = unitFiles.map(item =>
       fetch(item.path)
-        .then(response => {
-          if (!response.ok) throw new Error(`HTTP ${response.status} loading ${item.path}`);
-          return response.json();
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
         })
         .then(data => {
           window.knowledgeBase[item.key] = data;
         })
         .catch(err => {
-          console.error(`Failed to load ${item.path}:`, err);
+          console.error(`Failed loading ${item.path}:`, err);
           window.knowledgeBase[item.key] = [];
         })
     );
 
     await Promise.all(fetchPromises);
     renderUnitsGrid();
-  } catch (error) {
-    console.error("Knowledge base loading error:", error);
+  } catch (err) {
+    console.error("Knowledge base loading error:", err);
   }
 }
 
-/* --------------------------------------------------------------------------
-   SPA Page Routing & Navigation
-   -------------------------------------------------------------------------- */
 /**
- * Switches the active page view and updates sidebar navigation highlight.
- * @param {string} pageId - Target page ID (chat, explore, search, important, about).
+ * Strict SPA Navigation Logic (Critical Fix 1)
+ * @param {string} pageId - Target page ID (e.g., 'view-chat', 'view-explore').
  */
 function showPage(pageId) {
-  const pages = document.querySelectorAll('.page-view');
-  pages.forEach(p => p.classList.remove('active'));
-
-  const targetPage = document.getElementById(`page-${pageId}`);
-  if (targetPage) {
-    targetPage.classList.add('active');
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(page => {
+    page.style.display = 'none';
+    page.classList.remove('active');
+  });
+  
+  // Show target page
+  const target = document.getElementById(pageId);
+  if (target) {
+    target.style.display = 'flex';
+    target.classList.add('active');
   }
 
-  const navItems = document.querySelectorAll('.nav-item');
-  navItems.forEach(item => {
-    if (item.getAttribute('data-page') === pageId) {
+  // Update sidebar active state
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('data-target') === pageId) {
       item.classList.add('active');
-    } else {
-      item.classList.remove('active');
     }
   });
 
-  closeMobileDrawer();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function initNavigation() {
-  const navItems = document.querySelectorAll('.nav-item');
-  navItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const pageId = item.getAttribute('data-page');
-      showPage(pageId);
+  // Attach event listeners to sidebar links
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = item.getAttribute('data-target');
+      showPage(targetId);
     });
   });
 }
 
-/* --------------------------------------------------------------------------
-   Mobile Drawer Navigation
-   -------------------------------------------------------------------------- */
-function initMobileDrawer() {
-  const hamburgerBtn = document.getElementById('hamburger-btn');
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
-
-  if (hamburgerBtn && sidebar && overlay) {
-    hamburgerBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('mobile-open');
-      overlay.classList.toggle('mobile-open');
-    });
-
-    overlay.addEventListener('click', closeMobileDrawer);
-  }
-}
-
-function closeMobileDrawer() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
-  if (sidebar && overlay) {
-    sidebar.classList.remove('mobile-open');
-    overlay.classList.remove('mobile-open');
-  }
-}
-
-/* --------------------------------------------------------------------------
-   View 1: Chat View & Prompt Chips
-   -------------------------------------------------------------------------- */
+/**
+ * Chat Controller
+ */
 function initChatForm() {
   const form = document.getElementById('chat-form');
   const input = document.getElementById('chat-input');
@@ -186,7 +151,7 @@ function initPromptChips() {
       e.preventDefault();
       const query = chip.getAttribute('data-query');
       if (query) {
-        showPage('chat');
+        showPage('view-chat');
         if (input) input.value = query;
         processUserMessage(query);
         if (input) input.value = '';
@@ -195,9 +160,9 @@ function initPromptChips() {
   });
 }
 
-/* --------------------------------------------------------------------------
-   View 2: Explore Units Logic
-   -------------------------------------------------------------------------- */
+/**
+ * Explore View Controller
+ */
 function renderUnitsGrid() {
   const grid = document.getElementById('units-grid');
   if (!grid) return;
@@ -214,8 +179,7 @@ function renderUnitsGrid() {
     `;
   }).join('');
 
-  const cards = grid.querySelectorAll('.unit-card');
-  cards.forEach(card => {
+  grid.querySelectorAll('.unit-card').forEach(card => {
     card.addEventListener('click', () => {
       const unitKey = card.getAttribute('data-unitkey');
       openUnitTopicsView(unitKey);
@@ -243,8 +207,7 @@ function openUnitTopicsView(unitKey) {
       </div>
     `).join('');
 
-    const cards = topicsGrid.querySelectorAll('.topic-card');
-    cards.forEach(card => {
+    topicsGrid.querySelectorAll('.topic-card').forEach(card => {
       card.addEventListener('click', () => {
         const topicId = card.getAttribute('data-topicid');
         openExploreTopicDetail(topicId);
@@ -252,9 +215,9 @@ function openUnitTopicsView(unitKey) {
     });
   }
 
-  unitsListView.classList.add('hidden');
-  topicsView.classList.remove('hidden');
-  topicDetailView.classList.add('hidden');
+  unitsListView.style.display = 'none';
+  topicsView.style.display = 'block';
+  topicDetailView.style.display = 'none';
 }
 
 function openExploreTopicDetail(topicId) {
@@ -270,8 +233,8 @@ function openExploreTopicDetail(topicId) {
     attachBubbleChipListeners(contentElem);
   }
 
-  topicsView.classList.add('hidden');
-  detailView.classList.remove('hidden');
+  topicsView.style.display = 'none';
+  detailView.style.display = 'block';
 }
 
 function initExploreView() {
@@ -280,23 +243,23 @@ function initExploreView() {
 
   if (backToUnitsBtn) {
     backToUnitsBtn.addEventListener('click', () => {
-      document.getElementById('units-list-view').classList.remove('hidden');
-      document.getElementById('unit-topics-view').classList.add('hidden');
-      document.getElementById('explore-topic-detail').classList.add('hidden');
+      document.getElementById('units-list-view').style.display = 'block';
+      document.getElementById('unit-topics-view').style.display = 'none';
+      document.getElementById('explore-topic-detail').style.display = 'none';
     });
   }
 
   if (backToTopicsBtn) {
     backToTopicsBtn.addEventListener('click', () => {
-      document.getElementById('unit-topics-view').classList.remove('hidden');
-      document.getElementById('explore-topic-detail').classList.add('hidden');
+      document.getElementById('unit-topics-view').style.display = 'block';
+      document.getElementById('explore-topic-detail').style.display = 'none';
     });
   }
 }
 
-/* --------------------------------------------------------------------------
-   View 3: Search Topics Logic
-   -------------------------------------------------------------------------- */
+/**
+ * Search View Controller
+ */
 function initSearchView() {
   const input = document.getElementById('search-input');
   const backBtn = document.getElementById('back-to-search-btn');
@@ -314,8 +277,8 @@ function initSearchView() {
 
   if (backBtn) {
     backBtn.addEventListener('click', () => {
-      document.getElementById('search-main-view').classList.remove('hidden');
-      document.getElementById('search-topic-detail').classList.add('hidden');
+      document.getElementById('search-main-view').style.display = 'block';
+      document.getElementById('search-topic-detail').style.display = 'none';
     });
   }
 }
@@ -327,8 +290,8 @@ function performSearch(term) {
   const mainView = document.getElementById('search-main-view');
   const detailView = document.getElementById('search-topic-detail');
 
-  mainView.classList.remove('hidden');
-  detailView.classList.add('hidden');
+  mainView.style.display = 'block';
+  detailView.style.display = 'none';
 
   if (statsElem) {
     statsElem.textContent = `Found ${results.length} matching topics for "${term}":`;
@@ -336,7 +299,7 @@ function performSearch(term) {
 
   if (gridElem) {
     if (results.length === 0) {
-      gridElem.innerHTML = `<p class="search-empty-state" style="color: var(--text-muted); font-size: 15px;">No topics found. Try a different keyword.</p>`;
+      gridElem.innerHTML = `<p class="search-empty-state" style="color: #6B6157; font-size: 15px;">No topics found. Try a different keyword.</p>`;
       return;
     }
 
@@ -348,8 +311,7 @@ function performSearch(term) {
       </div>
     `).join('');
 
-    const cards = gridElem.querySelectorAll('.result-card');
-    cards.forEach(card => {
+    gridElem.querySelectorAll('.result-card').forEach(card => {
       card.addEventListener('click', () => {
         const topicId = card.getAttribute('data-topicid');
         openSearchTopicDetail(topicId);
@@ -371,8 +333,8 @@ function openSearchTopicDetail(topicId) {
     attachBubbleChipListeners(contentElem);
   }
 
-  mainView.classList.add('hidden');
-  detailView.classList.remove('hidden');
+  mainView.style.display = 'none';
+  detailView.style.display = 'block';
 }
 
 function resetSearchUI() {
@@ -405,9 +367,9 @@ function searchKnowledgeBase(term) {
   return results;
 }
 
-/* --------------------------------------------------------------------------
-   View 4: Important Questions Logic
-   -------------------------------------------------------------------------- */
+/**
+ * Important Questions Controller
+ */
 function initImportantQuestionsView() {
   const listElem = document.getElementById('important-questions-list');
   if (!listElem) return;
@@ -421,11 +383,10 @@ function initImportantQuestionsView() {
     </div>
   `).join('');
 
-  const cards = listElem.querySelectorAll('.important-card');
-  cards.forEach(card => {
+  listElem.querySelectorAll('.important-card').forEach(card => {
     card.addEventListener('click', () => {
       const query = card.getAttribute('data-query');
-      showPage('chat');
+      showPage('view-chat');
       const input = document.getElementById('chat-input');
       if (input) input.value = query;
       processUserMessage(query);
