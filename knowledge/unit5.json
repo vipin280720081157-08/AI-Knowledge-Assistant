@@ -1,0 +1,309 @@
+[
+{
+"id": "ai_applications_overview",
+"title": "AI Applications Overview",
+"overview": "Artificial Intelligence applications span numerous domains where automated reasoning, pattern recognition, decision-making, and learning add value. Modern AI systems transform industries by automating complex analytical tasks, predicting trends, and controlling autonomous physical systems. Essential domains include healthcare, finance, robotics, smart transportation, games, recommendation systems, and virtual personal assistants. Understanding these applications provides crucial context for how fundamental AI techniques translate into real-world operational systems.",
+"key_concepts": [
+"Healthcare AI - Medical diagnosis systems, robotic surgery assistance, drug discovery, and patient monitoring.",
+"Financial AI - Algorithmic trading, credit scoring, fraud detection, and automated risk management.",
+"Robotics and Autonomous Systems - Self-driving vehicles, drone navigation, and industrial assembly automation.",
+"Consumer Personalization - Search engines, recommendation systems, and natural language personal assistants."
+],
+"algorithm_steps": [],
+"related": [
+"expert_systems",
+"nlp_introduction",
+"information_retrieval"
+]
+},
+{
+"id": "expert_systems",
+"title": "Expert Systems",
+"overview": "An expert system is a computer program designed to emulate the decision-making ability of a human expert within a specific, restricted domain. It achieves expert-level performance by combining a comprehensive knowledge base with an inference engine capable of logical reasoning. These systems are especially valuable in diagnostic and consultative domains where human expertise is scarce, expensive, or needed continuously. Classic historic examples such as MYCIN for bacterial infection diagnosis and DENDRAL for chemical structure elucidation demonstrate their utility.",
+"key_concepts": [
+"Knowledge Base - The repository of domain-specific facts and heuristic IF-THEN rules.",
+"Inference Engine - The reasoning mechanism that applies rules to facts to derive new conclusions.",
+"Explanation Facility - Module that explains the reasoning steps and justifications to the user.",
+"User Interface - The interactive platform for entering problem details and reviewing conclusions."
+],
+"algorithm_steps": [
+"Step 1: Receive problem facts and initial inputs from the user through the interface.",
+"Step 2: Match user facts against the conditions in the rule base.",
+"Step 3: Select applicable rules using conflict resolution strategies such as priority or recency.",
+"Step 4: Execute the selected rule action to infer new facts or update working memory.",
+"Step 5: Repeat inference cycles until no further rules apply or a terminal goal state is reached.",
+"Step 6: Generate and display the final diagnosis or recommendation along with explanation traces."
+],
+"related": [
+"domain_knowledge_representation",
+"expert_system_shells",
+"knowledge_acquisition"
+]
+},
+{
+"id": "domain_knowledge_representation",
+"title": "Representing and Using Domain Knowledge",
+"overview": "Knowledge representation is the study of how an AI system structures domain information so that an inference engine can efficiently process and reason over it. Effective representation formalisms balance expressiveness with computational tractability, enabling automated systems to answer queries and solve complex domain problems. Primary techniques include rule-based systems, semantic networks, frame-based representations, and formal ontologies. Selecting the appropriate scheme depends on the structured nature of the domain and the type of reasoning required.",
+"key_concepts": [
+"Production Rules - IF-THEN statements connecting domain conditions to logical consequences or actions.",
+"Semantic Networks - Directed graphs where nodes represent concepts and edges represent binary relationships.",
+"Frames - Structured data representations containing named slots and filler values for entity attributes.",
+"Ontologies - Formal, explicit specifications of shared conceptualizations, classes, and relations."
+],
+"algorithm_steps": [
+"Step 1: Identify key domain concepts, entities, attributes, and relationships.",
+"Step 2: Select a suitable representation scheme such as rules, frames, or ontologies.",
+"Step 3: Encode factual domain assertions and behavioral heuristics into the chosen scheme.",
+"Step 4: Define reasoning patterns such as forward chaining or backward chaining.",
+"Step 5: Validate knowledge consistency to identify contradictions, redundancies, or missing links.",
+"Step 6: Query and update the knowledge structure during live inference execution."
+],
+"related": [
+"expert_systems",
+"knowledge_acquisition",
+"semantic_analysis"
+]
+},
+{
+"id": "expert_system_shells",
+"title": "Expert System Shells",
+"overview": "An expert system shell is a software framework that provides a complete expert system environment minus the domain-specific knowledge base. It includes a built-in inference engine, knowledge representation language syntax, user interface components, and explanation capabilities. By decoupling domain knowledge from the underlying reasoning mechanism, developers can rapidly build custom expert systems simply by populating the shell with new domain rules. Prominent historical and industrial examples include CLIPS, JESS, and Drools.",
+"key_concepts": [
+"Domain Decoupling - Complete separation of domain-specific rules from generic inference algorithms.",
+"Inference Engine Architecture - Pre-built support for forward chaining, backward chaining, and match algorithms.",
+"Development Tools - Integrated editors, rule debuggers, and knowledge base verification utilities.",
+"CLIPS and JESS - Classic rule-based software environments that popularized shell architectures."
+],
+"algorithm_steps": [
+"Step 1: Install and configure the expert system shell software framework.",
+"Step 2: Define domain-specific facts, class structures, and template slot definitions.",
+"Step 3: Write production rules using the standard syntax defined by the shell language.",
+"Step 4: Load initial facts into the working memory of the shell framework.",
+"Step 5: Trigger the internal inference engine execution engine to process working memory.",
+"Step 6: Retrieve resulting conclusions and inspect explanation logs produced by the shell."
+],
+"related": [
+"expert_systems",
+"domain_knowledge_representation"
+]
+},
+{
+"id": "knowledge_acquisition",
+"title": "Knowledge Acquisition",
+"overview": "Knowledge acquisition is the process of extracting, structuring, and organizing domain knowledge from human experts or raw data sources to build an AI knowledge base. It has historically been recognized as the primary bottleneck in expert system development due to the difficulty human experts face in articulating tacit knowledge. Modern knowledge acquisition combines manual knowledge engineering techniques with automated machine learning and text mining approaches. Efficient acquisition processes ensure the knowledge base remains accurate, complete, and maintainable.",
+"key_concepts": [
+"Feigenbaum Bottleneck - The classical difficulty of transferring expert knowledge into formal rule structures.",
+"Manual Elicitation - Standard interview techniques, protocol analysis, and observation of domain specialists.",
+"Automated Knowledge Acquisition - Machine learning and data mining techniques for extracting domain rules.",
+"Knowledge Validation - Testing extracted knowledge structures for completeness, consistency, and correctness."
+],
+"algorithm_steps": [
+"Step 1: Define domain boundaries and identify key human experts or unstructured text resources.",
+"Step 2: Conduct knowledge elicitation sessions using interviews, protocol analysis, or automatic mining tools.",
+"Step 3: Formalize raw extracted statements into intermediate representations like decision trees or tables.",
+"Step 4: Translate intermediate structures into production rules, frames, or formal ontologies.",
+"Step 5: Evaluate the formalized knowledge base using test cases to verify diagnostic accuracy.",
+"Step 6: Refine, update, and expand the knowledge base iteratively based on domain expert feedback."
+],
+"related": [
+"expert_systems",
+"domain_knowledge_representation",
+"information_extraction"
+]
+},
+{
+"id": "language_models",
+"title": "Language Models",
+"overview": "A language model is a probabilistic or computational model that assigns probabilities to sequences of words or predicts the next word in a context. Language models serve as core foundational components in speech recognition, translation, text generation, and information retrieval. Traditional statistical language models rely on n-gram word frequencies with smoothing techniques to account for unseen word combinations. Modern neural language models leverage deep learning architectures to capture long-range context and rich semantic representations.",
+"key_concepts": [
+"N-gram Models - Probabilistic models estimating sequence likelihoods using unigram, bigram, or trigram windows.",
+"Markov Assumption - Simplifying assumption that the probability of a word depends only on the previous n minus 1 words.",
+"Smoothing Techniques - Frequency adjustments like Laplace or Kneser-Ney smoothing to handle zero probabilities.",
+"Neural Language Models - Continuous word vector representations capturing context across extended text sequences."
+],
+"algorithm_steps": [],
+"related": [
+"nlp_introduction",
+"statistical_nlp",
+"spell_checking"
+]
+},
+{
+"id": "information_retrieval",
+"title": "Information Retrieval",
+"overview": "Information Retrieval is the discipline concerned with locating, ranking, and returning relevant text documents from large, unstructured collections in response to user queries. Unlike structured database queries, information retrieval operates on ambiguous natural language text, requiring sophisticated index structures and relevance scoring metrics. Key mechanisms involve tokenization, inverted index creation, Boolean queries, and vector space modeling. Modern search engines rely heavily on advanced term weighting schemes to measure topical relevance.",
+"key_concepts": [
+"Inverted Index - Data structure mapping individual words to lists of documents containing them.",
+"Term Frequency Inverse Document Frequency - Weighting scheme measuring word importance in a document context.",
+"Vector Space Model - Representing documents and queries as vectors in high-dimensional term space.",
+"Precision and Recall - Core evaluation metrics for precision of retrieved items versus coverage of relevant items."
+],
+"algorithm_steps": [
+"Step 1: Preprocess collection documents through tokenization, lowercasing, and stopword removal.",
+"Step 2: Stem or lemmatize tokens to reduce words to their common base representations.",
+"Step 3: Construct an inverted index mapping each unique term to document identification posting lists.",
+"Step 4: Parse user input queries and convert them into internal search vector representations.",
+"Step 5: Compute similarity scores between the query vector and candidate document vectors using cosine measure.",
+"Step 6: Sort matching documents by calculated relevance scores and return top ranked results to the user."
+],
+"related": [
+"information_extraction",
+"language_models",
+"statistical_nlp"
+]
+},
+{
+"id": "information_extraction",
+"title": "Information Extraction",
+"overview": "Information Extraction is the automated process of extracting structured information, such as entities, relations, and events, from unstructured or semi-structured natural language text. While information retrieval finds relevant documents, information extraction analyzes text content to fill specific predefined database schemas or knowledge bases. Core tasks include Named Entity Recognition, relation extraction, and template filling. It serves as a vital bridge converting unstructured human language into actionable, machine-readable data.",
+"key_concepts": [
+"Named Entity Recognition - Identifying and classifying entity mentions like persons, locations, and organizations.",
+"Relation Extraction - Detecting semantic interactions or associations between recognized entities.",
+"Coreference Resolution - Linking different expressions in text that refer to the exact same real-world entity.",
+"Template Filling - Extracting multi-argument event structures to populate structured form fields."
+],
+"algorithm_steps": [
+"Step 1: Segment target document text into sentences and process individual word tokens.",
+"Step 2: Apply Part-of-Speech tagging to identify grammatical categories across word tokens.",
+"Step 3: Detect and label named entity boundaries using statistical classifiers or pattern rules.",
+"Step 4: Identify semantic relationships connecting pair combinations of recognized named entities.",
+"Step 5: Map extracted entities and relations into predefined slot templates or target database fields.",
+"Step 6: Store populated template records into a structured repository or knowledge graph."
+],
+"related": [
+"information_retrieval",
+"syntactic_processing",
+"semantic_analysis"
+]
+},
+{
+"id": "nlp_introduction",
+"title": "Natural Language Processing Introduction",
+"overview": "Natural Language Processing (NLP) is an interdisciplinary branch of Computer Science and Artificial Intelligence focused on enabling computers to understand, interpret, and generate human languages. Human language is inherently ambiguous, context-dependent, and governed by complex structural rules at multiple descriptive levels. To process natural language effectively, systems analyze text across hierarchical tiers including phonological, morphological, syntactic, semantic, discourse, and pragmatic levels. Mastering these levels is fundamental for applications like translation, summarization, and conversational systems.",
+"key_concepts": [
+"Morphological Level - Analyzing internal word structure, prefixes, suffixes, and root forms.",
+"Syntactic Level - Analyzing structural relationships and grammatical correctness among words.",
+"Semantic Level - Determining literal dictionary meanings of phrases and sentence structures.",
+"Discourse and Pragmatic Levels - Interpreting extended context, user intent, and real-world implications."
+],
+"algorithm_steps": [],
+"related": [
+"syntactic_processing",
+"semantic_analysis",
+"discourse_pragmatic_processing"
+]
+},
+{
+"id": "syntactic_processing",
+"title": "Syntactic Processing",
+"overview": "Syntactic Processing, or parsing, involves analyzing the linear sequence of words in a sentence to determine its structural hierarchy according to a formal grammar. It transforms flat text strings into structured parse trees that uncover subject, verb, and object dependencies. Context-Free Grammars (CFGs) are commonly used to specify language rules, while parsing algorithms navigate these rules to build structural representations. Syntactic analysis resolves structural ambiguities and serves as an essential prerequisite step for deep semantic interpretation.",
+"key_concepts": [
+"Context-Free Grammar - Formal rule set defining valid phrase structure transformations in a language.",
+"Parse Tree - Hierarchical tree structure representing the syntactic constituent structure of a sentence.",
+"Top-Down Parsing - Constructing parse trees starting from the root symbol down to word tokens.",
+"Bottom-Up Parsing - Constructing parse trees starting from word tokens up to the root symbol."
+],
+"algorithm_steps": [
+"Step 1: Tokenize input text into discrete words and normalize punctuation markers.",
+"Step 2: Assign candidate Part-of-Speech tags to each word token in the input sentence.",
+"Step 3: Consult the formal grammar rule set to evaluate valid structural sentence combinations.",
+"Step 4: Apply parsing strategies such as shift-reduce or chart parsing to construct candidate trees.",
+"Step 5: Resolve structural parsing ambiguities using statistical probabilities or domain heuristics.",
+"Step 6: Output the complete syntactic parse tree representing sentence grammatical structure."
+],
+"related": [
+"nlp_introduction",
+"semantic_analysis",
+"statistical_nlp"
+]
+},
+{
+"id": "semantic_analysis",
+"title": "Semantic Analysis",
+"overview": "Semantic Analysis focuses on determining the literal meaning of phrases and sentences by mapping syntactic parse trees to formal, machine-understandable meaning representations. While syntax addresses grammatical structure, semantics evaluates truth conditions, entity relationships, and logical sense. Key challenges in semantic processing include resolving word sense ambiguity, assigning semantic roles to sentence arguments, and composing phrase meanings from individual constituent words. Effective semantic analysis enables AI systems to execute precise reasoning and command interpretation.",
+"key_concepts": [
+"Meaning Representation - Expressing sentence sense using first-order logic or conceptual dependency graphs.",
+"Word Sense Disambiguation - Determining the intended meaning of ambiguous words based on surrounding context.",
+"Semantic Role Labeling - Identifying agent, patient, and instrument roles associated with sentence predicates.",
+"Compositional Semantics - Principle that sentence meaning is a function of its syntactic parts and individual word senses."
+],
+"algorithm_steps": [
+"Step 1: Receive the syntactic parse tree generated during prior syntactic processing stages.",
+"Step 2: Lookup literal sense definitions for constituent words in a lexical database like WordNet.",
+"Step 3: Execute word sense disambiguation algorithms to select contextually correct word senses.",
+"Step 4: Assign semantic roles such as agent, patient, and location to sentence phrase arguments.",
+"Step 5: Apply compositional rules to combine individual phrase senses into a unified representation.",
+"Step 6: Generate a formal logical structure representing the complete literal sentence meaning."
+],
+"related": [
+"syntactic_processing",
+"discourse_pragmatic_processing",
+"domain_knowledge_representation"
+]
+},
+{
+"id": "discourse_pragmatic_processing",
+"title": "Discourse and Pragmatic Processing",
+"overview": "Discourse and Pragmatic Processing analyzes language beyond isolated sentences, interpreting text within multi-sentence passages, conversational settings, and real-world operational contexts. Discourse processing focuses on document coherence, tracking entity references across sentences, and identifying logical passage structure. Pragmatic processing accounts for speaker intent, social conventions, non-literal language, and shared world knowledge. Together, these processes allow AI assistants to understand indirect commands, track multi-turn dialogues, and resolve contextual pronouns.",
+"key_concepts": [
+"Anaphora Resolution - Linking pronouns like he, she, or it to their preceding noun antecedents.",
+"Coreference Resolution - Identifying all expressions in a discourse that refer to the exact same entity.",
+"Speech Acts - Interpreting utterances as functional actions like requesting, promising, or commanding.",
+"Conversational Implicature - Inferring implied meaning that goes beyond the literal sentence definition."
+],
+"algorithm_steps": [],
+"related": [
+"nlp_introduction",
+"semantic_analysis",
+"language_models"
+]
+},
+{
+"id": "statistical_nlp",
+"title": "Statistical Natural Language Processing",
+"overview": "Statistical Natural Language Processing relies on probabilistic mathematical models and machine learning algorithms trained on large text corpora, rather than hand-coded rule sets. By analyzing word occurrences, structural co-occurrences, and sequence distributions across massive data sets, statistical NLP systems automatically acquire language patterns. Techniques like Hidden Markov Models, Conditional Random Fields, and probabilistic context-free grammars dominate tasks such as part-of-speech tagging and parsing. This data-driven approach provides superior robustness when handling real-world text variability.",
+"key_concepts": [
+"Corpus-Based Learning - Training statistical systems using massive, annotated real-world text collections.",
+"Hidden Markov Models - Probabilistic sequence models used for tagging words based on hidden states.",
+"Probabilistic Parsing - Assigning likelihood scores to candidate parse trees to select the best structure.",
+"Maximum Likelihood Estimation - Calculating model parameters directly from observed training data counts."
+],
+"algorithm_steps": [
+"Step 1: Collect and clean a representative training text corpus for the target domain.",
+"Step 2: Annotate corpus samples with target linguistic labels like part-of-speech tags or parse trees.",
+"Step 3: Extract frequency statistics and token sequence probabilities from the annotated dataset.",
+"Step 4: Train statistical model parameters like transition and emission probabilities using estimation methods.",
+"Step 5: Apply decoding algorithms such as the Viterbi algorithm to predict optimal labels for new text.",
+"Step 6: Evaluate statistical model performance against test datasets using metrics like accuracy or F1 score."
+],
+"related": [
+"language_models",
+"syntactic_processing",
+"spell_checking"
+]
+},
+{
+"id": "spell_checking",
+"title": "Spell Checking",
+"overview": "Spell Checking is the automated process of detecting and correcting spelling errors in written text. Spell checkers evaluate word forms against standard dictionaries, identify non-word errors, and detect real-word contextual mistakes. Detection relies on string distance algorithms, n-gram probability evaluation, and candidate generation techniques. Modern spell checking extends beyond basic dictionary matching to incorporate statistical language models, ensuring that contextually inappropriate words are flagged and corrected seamlessly.",
+"key_concepts": [
+"Non-Word Error Detection - Identifying typed character sequences that do not exist in the vocabulary dictionary.",
+"Real-Word Error Correction - Detecting valid dictionary words used incorrectly in context.",
+"Edit Distance - Calculating minimum character insertions, deletions, substitutions to transform strings.",
+"Candidate Generation - Proposing closest matching valid words using edit distance or phonetic similarity."
+],
+"algorithm_steps": [
+"Step 1: Tokenize input text string into individual candidate word strings.",
+"Step 2: Check whether each target word exists in the system dictionary lexicon.",
+"Step 3: Flag words missing from the dictionary as potential non-word spelling errors.",
+"Step 4: Generate candidate correction words within a maximum Levenshtein edit distance of 1 or 2.",
+"Step 5: Score candidate suggestions using language model probabilities based on surrounding word context.",
+"Step 6: Rank candidates by combined edit distance and context scores and present the top matches."
+],
+"related": [
+"language_models",
+"statistical_nlp",
+"information_retrieval"
+]
+}
+]

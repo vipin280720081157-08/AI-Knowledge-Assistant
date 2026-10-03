@@ -1,0 +1,184 @@
+[
+{
+"id": "definitions_of_ai",
+"title": "Definitions and Categorization of Artificial Intelligence",
+"overview": "Artificial Intelligence is the study of agents that receive percepts from the environment and perform actions to maximize their chance of success. Definitions of AI are historically categorized along two dimensions: thought processes versus behavior, and human-like performance versus ideal rationality. Standard literature organizes AI into four main approaches: thinking humanly (cognitive modeling), thinking rationally (laws of thought/logic), acting humanly (Turing Test approach), and acting rationally (rational agent approach). Modern AI primarily focuses on the rational agent paradigm due to its mathematical tractability and generality.",
+"key_concepts": [
+"Thinking Humanly: The cognitive modeling approach that seeks to construct machines with minds through empirical psychological testing and brain imaging.",
+"Thinking Rationally: The 'laws of thought' approach using formal logic to represent knowledge and derive undeniable, sound conclusions.",
+"Acting Humanly: The operational definition exemplified by the Turing Test, measuring if a machine can act indistinguishably from a human.",
+"Acting Rationally: The rational agent approach focusing on acting so as to achieve the best outcome or best expected outcome given available information.",
+"Turing Test: A benchmark proposal by Alan Turing (1950) evaluating natural language processing, knowledge representation, automated reasoning, and machine learning."
+],
+"algorithm_steps": [],
+"related": ["foundation_and_history_of_ai", "concept_of_rationality", "intelligent_agents"]
+},
+{
+"id": "foundation_and_history_of_ai",
+"title": "Foundations and Historical Evolution of AI",
+"overview": "The discipline of Artificial Intelligence is built upon foundational ideas from philosophy, mathematics, economics, neuroscience, psychology, computer engineering, control theory, and linguistics. Modern AI officially emerged during the Dartmouth Conference in 1956, where leaders like John McCarthy, Marvin Minsky, Nathaniel Rochester, and Claude Shannon coined the term and defined its core aims. The field evolved through distinct historical phases: early optimism with symbolic AI, periods of funding contraction known as 'AI Winters', the revival of expert systems in the 1980s, and the modern era driven by statistical machine learning, deep learning, and massive data compute.",
+"key_concepts": [
+"Philosophical and Mathematical Foundations: Formal logic, computability theory (Turing completeness), probability theory, and decision-making under uncertainty.",
+"Dartmouth Workshop (1956): The birthplace of AI as an independent academic discipline.",
+"Early Enthusiasm (1952-1969): Symbolic reasoning breakthroughs including the Logic Theorist, General Problem Solver, and early neural network models like the Perceptron.",
+"AI Winters: Cycles of reduced funding and disillusionment following unmet expectations regarding combinatorial explosion and brittleness.",
+"Knowledge-Based Era & Neural Revival: Expert systems (1980s) followed by the backpropagation algorithm, probabilistic reasoning, and modern deep learning."
+],
+"algorithm_steps": [],
+"related": ["definitions_of_ai", "concept_of_rationality", "intelligent_agents"]
+},
+{
+"id": "intelligent_agents",
+"title": "Characteristics of Intelligent Agents",
+"overview": "An agent is anything that can be viewed as perceiving its environment through sensors and acting upon that environment through actuators. An intelligent agent is an autonomous entity that operates with intentionality, adaptability, and goal-directed behavior to achieve specified objectives. The agent function maps any given percept sequence to an appropriate action, representing the abstract mathematical behavior of the agent. The physical implementation of an agent function inside an architecture is called the agent program.",
+"key_concepts": [
+"Sensors and Actuators: Sensors collect physical or digital percepts from the environment, while actuators execute actions that alter environmental states.",
+"Percept and Percept Sequence: A percept is the agent's perceptual inputs at a specific instant; a percept sequence is the complete history of all percepts received.",
+"Agent Function: A mathematical mapping $f: P^* \to A$ from the set of all possible percept sequences $P^*$ to actions $A$.",
+"Agent Program: The concrete software algorithm or hardware system that executes the agent function on a physical computing architecture.",
+"Autonomy: The degree to which an agent's actions are driven by its own experience and learning rather than built-in prior knowledge."
+],
+"algorithm_steps": [
+"Obtain current sensory input from the physical or digital environment.",
+"Append the sensory input to the agent's historical percept sequence.",
+"Look up or compute the optimal action mapping based on the percept history or internal model.",
+"Send command signals to the actuators to execute the selected action.",
+"Update internal parameters or state knowledge based on feedback and state transition."
+],
+"related": ["concept_of_rationality", "peas_framework", "structure_of_agents"]
+},
+{
+"id": "concept_of_rationality",
+"title": "Concept of Rationality and Performance Measures",
+"overview": "Rationality refers to doing the right thing, which is defined as choosing an action that maximizes the expected value of a performance measure given the evidence provided by the percept sequence and built-in knowledge. Rationality is distinct from omniscience, as rational choices depend on expected success rather than actual success with perfect hindsight. An ideal rational agent must balance immediate action with information gathering, learning, and exploration to continuously improve performance over time.",
+"key_concepts": [
+"Performance Measure: An objective mathematical or quantitative evaluation criterion determining how successful an environmental state change is.",
+"Omniscience vs Rationality: An omniscient agent knows the actual outcome of its actions, whereas a rational agent maximizes expected outcomes under uncertainty.",
+"Information Gathering: Performing exploratory actions to acquire missing knowledge about the environment before executing critical decisions.",
+"Learning: Modifying internal mechanisms based on experience to improve performance in unfamiliar environments.",
+"Bounded Rationality: Decision-making that accepts physical computational limitations while striving for optimal actions within resource limits."
+],
+"algorithm_steps": [
+"Define the objective mathematical performance measure evaluating environmental states.",
+"Gather the sensory percept sequence from the environment.",
+"Evaluate available candidate actions using probabilistic models of outcome distributions.",
+"Select the candidate action that yields the maximum expected performance value.",
+"Execute the chosen action and refine future action models through learning updates."
+],
+"related": ["intelligent_agents", "peas_framework", "nature_of_environment"]
+},
+{
+"id": "peas_framework",
+"title": "The PEAS Framework (Performance, Environment, Actuators, Sensors)",
+"overview": "The PEAS framework is the foundational design methodology used to specify the operational task environment of an intelligent agent. PEAS stands for Performance measure, Environment, Actuators, and Sensors. Fully defining these four components is the mandatory first step in designing any rational agent architecture, as the environmental characteristics dictate the necessary internal algorithmic complexity of the agent program.",
+"key_concepts": [
+"Performance Measure: The external metrics evaluating the success of the agent's behavior (e.g., safety, speed, legal compliance, minimal fuel consumption).",
+"Environment: The surrounding world, context, or domain in which the agent operates (e.g., city roads, chessboards, patient monitors).",
+"Actuators: The physical or digital mechanisms through which the agent performs actions (e.g., robotic arms, steering wheel, screen display, packet transmitter).",
+"Sensors: The instruments or data feeds through which the agent receives environmental percepts (e.g., cameras, LIDAR, sonar, keyboard input)."
+],
+"algorithm_steps": [
+"Identify the specific domain objectives and quantify them into a formal Performance measure.",
+"Catalog all external factors, objects, and constraints defining the operational Environment.",
+"Determine the available Actuators and their corresponding action sets.",
+"Specify all Sensors and the continuous or discrete data feeds they deliver.",
+"Design an agent program adapted to the structural properties of the specified PEAS environment."
+],
+"related": ["intelligent_agents", "concept_of_rationality", "nature_of_environment", "structure_of_agents"]
+},
+{
+"id": "nature_of_environment",
+"title": "Nature and Typology of Task Environments",
+"overview": "Task environments are categorized along specific structural dimensions that govern the design of the intelligent agent program. Environments vary across several dichotomies: Fully Observable vs. Partially Observable, Single-Agent vs. Multi-Agent, Deterministic vs. Stochastic, Episodic vs. Sequential, Static vs. Dynamic, Discrete vs. Continuous, and Known vs. Unknown. Designing effective agents requires analyzing these dimensions, as complex combinations (e.g., partially observable, stochastic, continuous, dynamic multi-agent domains) present the highest algorithmic difficulty.",
+"key_concepts": [
+"Fully Observable vs Partially Observable: Whether sensors provide complete access to the environment state at any point in time.",
+"Deterministic vs Stochastic: Whether the next state of the environment is completely determined by the current state and the agent's action.",
+"Episodic vs Sequential: Whether current choices affect future decisions (sequential) or each episode is independent (episodic).",
+"Static vs Dynamic: Whether the environment can change while the agent is deliberating and calculating its action.",
+"Discrete vs Continuous: Whether states, time, percepts, or actions are broken into distinct distinct values or continuous ranges.",
+"Single-Agent vs Multi-Agent: Whether an environment contains only one active agent or multiple competing/cooperating entities."
+],
+"algorithm_steps": [],
+"related": ["peas_framework", "intelligent_agents", "structure_of_agents"]
+},
+{
+"id": "structure_of_agents",
+"title": "Architectures and Types of Agent Programs",
+"overview": "The internal structure of an agent consists of a physical computing architecture running an agent program that executes the agent function. AI categorizes agent programs into five fundamental types of increasing architectural complexity: Simple Reflex Agents, Model-Based Reflex Agents, Goal-Based Agents, Utility-Based Agents, and Learning Agents. Choosing the right architecture depends on whether the agent needs internal state tracking, long-term goal planning, or tradeoff optimization under uncertainty.",
+"key_concepts": [
+"Simple Reflex Agents: Agents that select actions based solely on current percepts using condition-action rules, ignoring percept history.",
+"Model-Based Reflex Agents: Agents that maintain an internal state to track unobserved aspects of a partially observable environment.",
+"Goal-Based Agents: Agents that combine state information with goal descriptions to plan multi-step action sequences.",
+"Utility-Based Agents: Agents that evaluate how desirable states are using a utility function to optimize decisions under conflicting goals.",
+"Learning Agents: Agents split into a learning element, performance element, critic, and problem generator to continuously improve from experience."
+],
+"algorithm_steps": [
+"Receive current percept sequence from sensors.",
+"Update internal state representation using sensor inputs, past state, and world physics models (Model-Based).",
+"Evaluate candidate actions against target state goals (Goal-Based) or utility functions (Utility-Based).",
+"Select the action that maximizes expected utility or moves closest to the target goal state.",
+"Pass the chosen action to the physical architecture actuators for execution."
+],
+"related": ["intelligent_agents", "peas_framework", "nature_of_environment"]
+},
+{
+"id": "problem_solving_agent",
+"title": "Problem-Solving Agents and State-Space Search",
+"overview": "A problem-solving agent is a goal-based agent that uses atomic state representations to plan sequences of actions leading to desirable states. When operating in fully observable, deterministic, static, and discrete environments, problem-solving agents formulate goals and abstract state spaces, then execute search algorithms offline to discover a path to a goal before executing any physical action. This cycle decouples the deliberative execution of search from real-time environmental action.",
+"key_concepts": [
+"Goal Formulation: Defining the goal state or criteria based on current situation and agent performance measures.",
+"Problem Formulation: Deciding what actions and states to consider given a goal, abstracts away real-world complexities.",
+"Atomic State Representation: Treating states of the world as complete, indivisible entities without explicit internal structure during search.",
+"Open-Loop Execution: Executing an entire solution sequence without checking sensors during action execution because the environment is deterministic.",
+"Search Algorithm: Systematic exploration of state-space trees generated by expanding states using successor functions."
+],
+"algorithm_steps": [
+"Formulate a target goal based on current environment state and performance objectives.",
+"Formulate the formal problem by establishing state representations, initial state, actions, and transition models.",
+"Invoke a state-space search algorithm to discover an optimal sequence of actions from initial state to goal state.",
+"Execute the ordered steps of the discovered plan sequentially (Open-Loop execution).",
+"Re-evaluate goal completion upon full sequence execution or environment state change."
+],
+"related": ["problem_formulation", "example_problems", "structure_of_agents"]
+},
+{
+"id": "problem_formulation",
+"title": "Formal Components of Problem Formulation",
+"overview": "Problem formulation is the process of deciding what actions and states to consider in achieving a goal, translating complex real-world situations into formal mathematical abstractions. A formally specified problem in AI consists of five fundamental components: the initial state, the set of possible actions, the transition model defining state changes, the goal test to determine success, and the path cost function measuring step costs. Together, the initial state, actions, and transition model define the state space of the problem.",
+"key_concepts": [
+"Initial State: The specific starting state in which the agent begins its problem-solving process.",
+"Actions: The set of applicable operations $Actions(s)$ available to the agent when in state $s$.",
+"Transition Model: A formal function $Result(s, a)$ returning the state reached by taking action $a$ in state $s$.",
+"Goal Test: A test function determining whether a given state matches the goal state or satisfies goal conditions.",
+"Path Cost: A function $c(s, a, s')$ assigning a numeric cost to taking action $a$ to transition from state $s$ to state $s'$, summed along a path."
+],
+"algorithm_steps": [
+"Identify and represent the Initial State of the agent and environment.",
+"Define the set of valid Actions executable in any given state $s$.",
+"Construct the Transition Model function $Result(s, a)$ determining state transitions.",
+"Specify an explicit Goal Test function returning true when a state satisfies goal conditions.",
+"Assign step costs $c(s, a, s')$ to establish the cumulative Path Cost function."
+],
+"related": ["problem_solving_agent", "example_problems", "nature_of_environment"]
+},
+{
+"id": "example_problems",
+"title": "Toy and Real-World Example Problems in AI",
+"overview": "In AI research, problems are categorized into toy problems and real-world problems. Toy problems are concise, exact mathematical abstractions designed to test, illustrate, or benchmark various search algorithms under controlled conditions. Examples include the 8-puzzle, Vacuum World, 8-Queens problem, and Missionaries and Cannibals. Real-world problems are complex, messy applications whose solutions people genuinely care about, such as route finding, airline scheduling, robot navigation, autonomous vehicle planning, and automatic VLSI layout design.",
+"key_concepts": [
+"Toy Problems: Controlled problem abstractions used to benchmark algorithmic correctness and computational performance.",
+"8-Puzzle: A sliding-block puzzle consisting of numbered tiles on a 3x3 grid with one empty space, useful for testing heuristic search.",
+"8-Queens Problem: A constraint satisfaction problem placing eight chess queens on an 8x8 board such that no two queens attack each other.",
+"Route-Finding Problem: Graph search problem defining geographical locations as nodes and roads as weighted edges to find short paths.",
+"Real-World Problems: Complex domains with large state spaces, noisy conditions, and multiple constraints requiring sophisticated abstraction."
+],
+"algorithm_steps": [
+"Select a target domain (e.g., 8-Puzzle sliding tile or Route Finding).",
+"Abstract environmental details to build an idealized state representation.",
+"Formulate initial state, allowed actions, transition operators, and target goal state.",
+"Apply state-space search strategies to find paths through the graph or state tree.",
+"Analyze path cost, branch factor, depth, and computational efficiency of the solution."
+],
+"related": ["problem_solving_agent", "problem_formulation"]
+}
+]

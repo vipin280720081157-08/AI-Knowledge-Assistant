@@ -1,0 +1,337 @@
+[
+{
+"id": "logical_agents",
+"title": "Logical Agents",
+"overview": "Logical agents are artificial intelligence systems that represent world knowledge using formal logic to reason and draw sound conclusions about their environment. Unlike purely reactive agents that map percepts directly to actions, logical agents maintain an internal state containing declarative representations of domain facts and rules. By applying automated reasoning procedures over this knowledge base, a logical agent can deduce hidden states, plan multi-step actions, and adapt dynamically to novel situations. This architecture forms the foundational paradigm of knowledge-based systems in classical artificial intelligence.",
+"key_concepts": [
+"Declarative Knowledge - Information represented explicitly as formal sentences in a knowledge base.",
+"Knowledge Representation - The formal symbolic framework used to encode facts, relationships, and domain rules.",
+"Logic-Based Reasoning - The process of applying mathematical deduction to derive new valid facts from known ones.",
+"Environment Abstraction - Converting real-world percepts into structured symbolic representations for processing."
+],
+"algorithm_steps": [],
+"related": [
+"knowledge_based_agents",
+"logic_definition_and_types",
+"propositional_logic_syntax"
+]
+},
+{
+"id": "knowledge_based_agents",
+"title": "Knowledge-Based Agents",
+"overview": "Knowledge-based agents (KBAs) are logical agents structured around a central knowledge base that stores formal representations of world knowledge. The core mechanism of a KBA operates via two primary operations: TELL, which inserts new percepts or learned facts into the knowledge base, and ASK, which queries the knowledge base to deduce optimal actions or answer queries. KBAs decouple domain knowledge from the reasoning engine, allowing the agent to update its belief state independent of its decision-making algorithm. This separation enables high flexibility, modularity, and explicit explainability in complex domains.",
+"key_concepts": [
+"Knowledge Base (KB) - A central repository of sentences expressed in a formal representation language.",
+"Inference Engine - The domain-independent reasoning mechanism that processes sentences in the KB.",
+"TELL Operation - Interface function used to add new percepts or derived assertions to the KB.",
+"ASK Operation - Interface function used to query the KB for derived facts or action selection.",
+"KBA Cycle - The continuous sense-think-act loop consisting of TELL percept, ASK action, and TELL action."
+],
+"algorithm_steps": [],
+"related": [
+"logical_agents",
+"simple_inference_procedure",
+"first_order_logic_intro"
+]
+},
+{
+"id": "logic_definition_and_types",
+"title": "Logic (Definition and Types)",
+"overview": "Logic in artificial intelligence is a mathematical framework for representing statements about the world and formally modeling correct reasoning. It establishes rules for structuring valid assertions and deriving truthful inferences without relying on domain-specific intuition. Formal logics are categorized by their expressiveness and ontological commitments, ranging from Propositional Logic, which deals with simple Boolean facts, to First-Order Logic, which incorporates objects and relations, and higher-order or non-classical logics like fuzzy and modal logics. Understanding these logical formalisms allows AI developers to select appropriate trade-offs between expressive power and computational complexity.",
+"key_concepts": [
+"Syntax - Rules governing the construction of valid sentences within a formal logical language.",
+"Semantics - Rules determining the truth or meaning of sentences with respect to a world model.",
+"Entailment - A fundamental relationship where the truth of one sentence logically necessitates the truth of another.",
+"Soundness - A property of an inference engine where every derived sentence is guaranteed to be true.",
+"Completeness - A property of an inference engine capable of deriving every sentence that is logically entailed."
+],
+"algorithm_steps": [],
+"related": [
+"propositional_logic_syntax",
+"propositional_logic_semantics",
+"first_order_logic_intro"
+]
+},
+{
+"id": "propositional_logic_syntax",
+"title": "Propositional Logic - Syntax",
+"overview": "The syntax of propositional logic defines the precise rules for constructing well-formed formulas using atomic propositions and logical connectives. Atomic propositions represent basic statements that can be either true or false, traditionally denoted by uppercase letters such as P, Q, or R. Complex or compound formulas are built recursively by joining atomic formulas using structural operators: NOT, AND, OR, IMPLIES, and IF AND ONLY IF. Parentheses are utilized to eliminate structural ambiguity and establish clear operator precedence, ensuring every valid statement has a single unique syntactic parsing.",
+"key_concepts": [
+"Proposition Symbols - Atomic statements represented by uppercase symbols denoting indivisible facts.",
+"Logical Operators - Connectives including NOT, AND, OR, IMPLIES, and IF AND ONLY IF used to build complex sentences.",
+"Atomic Sentences - Individual proposition symbols standing alone without any logical connectives.",
+"Complex Sentences - Well-formed formulas formed by combining atomic sentences with logical connectives.",
+"Operator Precedence - Structural hierarchy rules that govern the order of logical connective evaluation."
+],
+"algorithm_steps": [],
+"related": [
+"logic_definition_and_types",
+"propositional_logic_semantics",
+"reasoning_patterns_propositional_logic"
+]
+},
+{
+"id": "propositional_logic_semantics",
+"title": "Propositional Logic - Semantics",
+"overview": "The semantics of propositional logic dictates how the truth values of complex sentences are determined based on the truth assignments of their constituent atomic propositions. A model assigns a definitive truth value of True or False to every proposition symbol in the domain. Truth tables define the exact semantic behavior of logical connectives like AND, OR, NOT, IMPLIES, and IF AND ONLY IF across all possible combinations. A sentence is valid if it is true in all possible models, satisfiable if it is true in at least one model, and unsatisfiable if it is false across all possible models.",
+"key_concepts": [
+"Model - A formal assignment of specific truth values to every proposition symbol in the vocabulary.",
+"Interpretation - The process of evaluating a logical expression to True or False under a specific model.",
+"Tautology - A logical sentence that evaluates to True under every possible model.",
+"Contradiction - A logical sentence that evaluates to False under every possible model.",
+"Satisfiability - The property of a logical sentence having at least one model in which it evaluates to True."
+],
+"algorithm_steps": [],
+"related": [
+"propositional_logic_syntax",
+"simple_inference_procedure",
+"reasoning_patterns_propositional_logic"
+]
+},
+{
+"id": "simple_inference_procedure",
+"title": "Simple Inference Procedure (Truth Table Enumeration)",
+"overview": "Truth table enumeration is a foundational, model-checking inference algorithm used in propositional logic to prove logical entailment. To determine if a knowledge base entails a query sentence alpha, the algorithm systematically construct a complete truth table listing every possible truth assignment for all proposition symbols involved. It checks every row where the knowledge base evaluates to True; if the query alpha also evaluates to True in every single one of those rows, then entailment holds. While completely sound and complete, this exhaustive enumeration method exhibits exponential time complexity relative to the number of proposition symbols.",
+"key_concepts": [
+"Model Checking - Testing logical entailment by directly evaluating truth values across all possible models.",
+"Truth Table Enumeration - Exhaustively building combinations of truth assignments for foundational propositions.",
+"Logical Entailment Test - Verifying if a target query is True in every model where the Knowledge Base is True.",
+"Exponential Time Complexity - Computational growth scaled at 2 to the power of N for N atomic symbols.",
+"Soundness and Completeness - Guarantee that truth table enumeration finds all true entailments without error."
+],
+"algorithm_steps": [
+"1. Extract all unique proposition symbols present in both the Knowledge Base and the query alpha.",
+"2. Construct a truth table grid with columns for each symbol, the overall Knowledge Base, and query alpha.",
+"3. Generate 2 to the power of N rows representing every possible combination of True and False assignments.",
+"4. Evaluate the truth value of the entire Knowledge Base for each row by evaluating its constituent formulas.",
+"5. Identify all model rows where the Knowledge Base evaluates to True.",
+"6. Check the truth value of query alpha specifically within those identified Knowledge Base True rows.",
+"7. Return True for entailment if query alpha is True in all identified rows, otherwise return False."
+],
+"related": [
+"propositional_logic_semantics",
+"reasoning_patterns_propositional_logic",
+"resolution"
+]
+},
+{
+"id": "reasoning_patterns_propositional_logic",
+"title": "Reasoning Patterns in Propositional Logic",
+"overview": "Reasoning patterns in propositional logic represent reusable rules of inference that transform sets of known sentences into new logically valid sentences. These standard inference rules allow systems to perform efficient syntactic proofs without constructing massive truth tables. Essential patterns include Modus Ponens, Modus Tollens, And-Elimination, And-Introduction, and Disjunctive Syllogism. Sound inference engines apply these structural patterns iteratively to derive complex conclusions from initial premises, providing a transparent, step-by-step logical derivation chain.",
+"key_concepts": [
+"Modus Ponens - Inferring Q directly when both P and P IMPLIES Q are established facts.",
+"Modus Tollens - Inferring NOT P directly when both NOT Q and P IMPLIES Q are established facts.",
+"And-Elimination - Inferring individual conjuncts P or Q separately from the compound statement P AND Q.",
+"And-Introduction - Combining independent true facts P and Q into the unified compound statement P AND Q.",
+"Disjunctive Syllogism - Inferring Q directly when given P OR Q together with the negated fact NOT P."
+],
+"algorithm_steps": [],
+"related": [
+"propositional_logic_syntax",
+"simple_inference_procedure",
+"first_order_logic_intro"
+]
+},
+{
+"id": "first_order_logic_intro",
+"title": "First-Order Logic (FOL) - Introduction",
+"overview": "First-Order Logic (FOL), also known as Predicate Logic, is a formal language designed to express world knowledge far more concisely than propositional logic. While propositional logic assumes the world contains only facts, FOL assumes the world contains distinct objects, relations between those objects, and functions mapping objects to other objects. By introducing quantifiers like For All and There Exists alongside variable placeholders, FOL allows general assertions about classes of objects without needing explicit propositional enumerations for every specific instance.",
+"key_concepts": [
+"Ontological Commitment - The structural assumptions a logic makes about the nature of reality.",
+"Objects - Distinct entities in the world such as people, numbers, cars, or physical items.",
+"Relations - Connections linking objects together, expressed as predicates like IsShorterThan or LivesNear.",
+"Functions - Operations that map specific input objects directly to a unique resulting object.",
+"Expressive Efficiency - The capacity to represent complex generalized statements in compact syntax."
+],
+"algorithm_steps": [],
+"related": [
+"logic_definition_and_types",
+"fol_syntax",
+"fol_semantics"
+]
+},
+{
+"id": "fol_syntax",
+"title": "First-Order Logic - Syntax",
+"overview": "The syntax of First-Order Logic specifies the structural grammar for building expressions using constants, variables, functions, predicates, logical connectives, and quantifiers. Constant symbols refer to specific objects, while variable symbols act as placeholders for domain elements. Function symbols map terms to other terms, and predicate symbols declare relations among terms to create atomic formulas. Complex formulas are formed by joining atomic formulas using logical operators (NOT, AND, OR, IMPLIES) and quantifying variables using Universal (For All) or Existential (There Exists) quantifiers.",
+"key_concepts": [
+"Constant Symbols - Capitalized names or symbols designating individual, unique objects in the domain.",
+"Variable Symbols - Lowercase placeholders that range over unspecified objects within the domain.",
+"Terms - Expressions referencing objects, composed of constants, variables, or functional applications.",
+"Predicates - Symbols representing relations that accept terms as arguments and evaluate to truth values.",
+"Universal Quantifier - Symbol indicating that a statement holds True For All objects in the domain.",
+"Existential Quantifier - Symbol indicating that a statement holds True for There Exists at least one object."
+],
+"algorithm_steps": [],
+"related": [
+"first_order_logic_intro",
+"fol_semantics",
+"unification"
+]
+},
+{
+"id": "fol_semantics",
+"title": "First-Order Logic - Semantics",
+"overview": "The semantics of First-Order Logic grounds abstract logical expressions in real or formal concrete worlds through domain interpretations. An interpretation defines a non-empty domain of objects and maps constant symbols to specific domain objects, function symbols to object mappings, and predicate symbols to relations over domain tuples. A universally quantified sentence is true if its inner expression holds true for every object in the domain, whereas an existentially quantified sentence requires only a single object in the domain to satisfy the expression. This formal framework enables rigorous mathematical evaluation of facts, assertions, and queries.",
+"key_concepts": [
+"Domain of Discourse - The set of real or abstract objects that a logical language describes.",
+"Interpretation Function - The mapping mechanism binding formal symbols to actual domain objects and relations.",
+"Truth Value Assignment - Evaluating FOL sentences to True or False under a specific formal interpretation.",
+"Universal Satisfaction - The requirement that a statement holds true under all variable assignments.",
+"Existential Satisfaction - The requirement that a statement holds true under at least one variable assignment."
+],
+"algorithm_steps": [],
+"related": [
+"fol_syntax",
+"first_order_logic_intro",
+"fol_inference"
+]
+},
+{
+"id": "fol_inference",
+"title": "Inference in First-Order Logic",
+"overview": "Inference in First-Order Logic involves deriving new logical sentences from a knowledge base containing quantifiers, predicates, and variables. One classic approach converts FOL knowledge bases into Propositional Logic through Universal Instantiation and Existential Instantiation (Skolemization), enabling propositional inference engines to process the assertions. However, propositionalization often leads to an explosion of ground sentences. Modern FOL inference engines avoid this computational overhead by operating directly on quantified expressions using Unification, Generalized Modus Ponens, Lifting, and Resolution techniques.",
+"key_concepts": [
+"Universal Instantiation - Replacing a universally quantified variable with any ground term from the domain.",
+"Existential Instantiation - Replacing an existentially quantified variable with a fresh Skolem constant.",
+"Propositionalization - Converting FOL sentences into propositional equivalents by instantiating ground terms.",
+"Ground Term - A term containing strictly constant symbols and functions without any unassigned variables.",
+"Generalized Modus Ponens - An advanced inference pattern combining substitution and implication directly on predicates."
+],
+"algorithm_steps": [],
+"related": [
+"unification",
+"lifting",
+"forward_chaining",
+"backward_chaining",
+"resolution"
+]
+},
+{
+"id": "unification",
+"title": "Unification",
+"overview": "Unification is the algorithmic process of finding a variable substitution that makes two distinct logical expressions syntactically identical. It plays a pivotal role in first-order logic inference mechanisms, enabling matching between general rules and specific facts. The algorithm compares the structural components of two expressions recursively, binding variables to terms where appropriate. To prevent infinite recursive structures, an Occur Check must verify that a variable does not appear inside the term it is being bound to. The result of a successful unification process is called the Most General Unifier (MGU).",
+"key_concepts": [
+"Substitution - A set of variable-to-term bindings used to replace variables in logical expressions.",
+"Most General Unifier (MGU) - The simplest substitution that unifies two terms without unnecessary bindings.",
+"Occur Check - A safety check ensuring a variable isn't unified with a complex term containing itself.",
+"Syntactic Equality - The target state where two unified logical expressions become structurally identical.",
+"Pattern Matching - The mechanism of comparing predicate signatures and argument lists for compatibility."
+],
+"algorithm_steps": [
+"1. Accept two logical expressions expression1 and expression2 as inputs to the unify function.",
+"2. Return an empty substitution set if expression1 and expression2 are already syntactically identical.",
+"3. If expression1 is a single variable, bind expression1 to expression2 after completing the Occur Check.",
+"4. If expression2 is a single variable, bind expression2 to expression1 after completing the Occur Check.",
+"5. If both inputs are compound expressions, check if their predicate symbols and argument counts match.",
+"6. Recursively unify the top-level predicate symbols and corresponding argument elements from left to right.",
+"7. Accumulate and compose all variable substitutions generated during recursive steps into a unified MGU set.",
+"8. Return the final Most General Unifier substitution set if successful, or return Failure if a mismatch occurs."
+],
+"related": [
+"fol_syntax",
+"lifting",
+"forward_chaining",
+"backward_chaining"
+]
+},
+{
+"id": "lifting",
+"title": "Lifting",
+"overview": "Lifting is the conceptual framework in first-order logic that elevates propositional inference rules directly to operate on quantified first-order expressions. Instead of instantiating all universal variables with ground terms (which creates an immense explosion of propositional sentences), lifting utilizes unification to substitute variables dynamically during the deduction process. By applying lifted rules like Generalized Modus Ponens, inference engines can process abstract statements containing variables directly, achieving high computational efficiency and keeping the knowledge base compact.",
+"key_concepts": [
+"Generalized Modus Ponens - A lifted version of Modus Ponens using unification to match premises.",
+"Lifted Rules - Standard inference rules extended to operate on quantified expressions containing variables.",
+"Implicit Instantiation - Substituting variables dynamically during rule application rather than prior to execution.",
+"Efficiency Optimization - Avoiding the combinatorial explosion of grounding all quantified variables."
+],
+"algorithm_steps": [],
+"related": [
+"fol_inference",
+"unification",
+"forward_chaining",
+"backward_chaining"
+]
+},
+{
+"id": "forward_chaining",
+"title": "Forward Chaining",
+"overview": "Forward chaining is a data-driven, bottom-up inference algorithm commonly used in logical rule-based systems and expert systems. Starting with known facts in the knowledge base, the algorithm evaluates rules of the form IF premises THEN conclusion. Whenever the premises of a rule are satisfied by known facts (using unification in first-order logic), the rule fires, and its conclusion is added to the set of known facts. This process iterates continuously, deriving new knowledge until a specific target query is proven or no further rule applications are possible.",
+"key_concepts": [
+"Data-Driven Reasoning - Deductive process starting from known facts and progressing forward to new conclusions.",
+"Definite Clauses - Sentences structured as implications with a conjunction of positive premises and one conclusion.",
+"Rule Firing - The execution of an implication rule when all its premise conditions are fully satisfied.",
+"Renaming Variables - Standardizing apart variables in rules to prevent unintentional variable conflicts.",
+"Fixed-Point Termination - Halting inference when no new facts can be generated from existing rules."
+],
+"algorithm_steps": [
+"1. Collect all known atomic facts from the Knowledge Base into a set of known assertions.",
+"2. Iterate over every implication rule in the Knowledge Base that has not yet fired.",
+"3. For each rule, search for a substitution that unifies all rule premises with known facts in the KB.",
+"4. If a valid substitution is found, apply it to the rule's conclusion to generate a new ground fact.",
+"5. Check if the newly generated fact matches the goal query; if so, return Success with the substitution.",
+"6. If the generated fact is not already in the set of known assertions, add it to the active facts list.",
+"7. Repeat the rule evaluation loop until the goal query is proven or no new facts can be derived."
+],
+"related": [
+"backward_chaining",
+"unification",
+"lifting",
+"fol_inference"
+]
+},
+{
+"id": "backward_chaining",
+"title": "Backward Chaining",
+"overview": "Backward chaining is a goal-driven, top-down inference algorithm widely utilized in logic programming systems like Prolog and automated theorem provers. The algorithm begins with a specific target query (goal) and works backward, searching for implication rules in the knowledge base whose conclusions unify with the goal. The premises of those matching rules then become new sub-goals that must be proven recursively. Backward chaining focuses computation exclusively on facts and rules relevant to the goal, making it exceptionally efficient for targeted query answering.",
+"key_concepts": [
+"Goal-Driven Reasoning - Deductive process starting from a query goal and working backward to supporting facts.",
+"Sub-goal Generation - Breaking down a main goal into supporting premise requirements dictated by rules.",
+"Depth-First Search - Traversal strategy used to systematically explore logical proof trees for goals.",
+"Backtracking - Undoing failed variable bindings to explore alternative rule paths when a sub-goal fails.",
+"Prolog Engine Core - The standard execution mechanism underlying logic programming environments."
+],
+"algorithm_steps": [
+"1. Initialize the inference process with a target goal query and an empty substitution set.",
+"2. Search the Knowledge Base for facts or rule conclusions that unify with the current goal.",
+"3. If a matching atomic fact is found, return the resulting unification substitution set as Success.",
+"4. If a matching rule conclusion is found, extract the rule's premise list as new sub-goals.",
+"5. Apply the current variable substitution bindings across all newly generated sub-goals.",
+"6. Process each sub-goal recursively using the backward chaining algorithm steps.",
+"7. If all sub-goals succeed, return the combined substitution bindings; otherwise, backtrack to try alternate rules."
+],
+"related": [
+"forward_chaining",
+"unification",
+"lifting",
+"fol_inference"
+]
+},
+{
+"id": "resolution",
+"title": "Resolution",
+"overview": "Resolution is a complete and sound inference algorithm for propositional and first-order logic that operates via proof by refutation. To prove that a knowledge base entails a sentence alpha, the algorithm negates alpha, adds it to the knowledge base, and converts all sentences into Conjunctive Normal Form (CNF). Resolution then iteratively applies the resolution rule to pairs of complementary literals, cancelling them out to produce new clauses (resolvents). If this process produces an empty clause (representing a logical contradiction), the proof succeeds, confirming that the original query alpha is logically entailed.",
+"key_concepts": [
+"Proof by Refutation - Proving a query by showing its negation combined with the KB causes a contradiction.",
+"Conjunctive Normal Form (CNF) - A conjunction of disjunctions (AND of OR clauses) used as standard input.",
+"Resolution Rule - Deriving clause A OR B from constituent input clauses A OR C and B OR NOT C.",
+"Complementary Literals - Pairs of matching atomic facts where one literal is positive and the other is negated.",
+"Empty Clause - A representation of an explicit logical contradiction, denoting successful refutation."
+],
+"algorithm_steps": [
+"1. Negate the goal query alpha and add the negated sentence NOT alpha directly to the Knowledge Base.",
+"2. Convert every sentence in the updated Knowledge Base into Conjunctive Normal Form (CNF) clauses.",
+"3. Eliminate existential quantifiers using Skolemization and standardize all variable names apart.",
+"4. Identify pair of clauses containing complementary literals that can be unified.",
+"5. Apply the resolution rule to resolve the pair, producing a new derived clause called the resolvent.",
+"6. Check if the newly derived resolvent clause is empty; if so, return True for logical entailment.",
+"7. Add the new resolvent clause to the active clause set and repeat resolution until an empty clause is found or no new clauses can be created."
+],
+"related": [
+"simple_inference_procedure",
+"fol_inference",
+"unification",
+"propositional_logic_syntax"
+]
+}
+]

@@ -1,0 +1,428 @@
+[
+{
+"id": "problem_solving_agents",
+"title": "Problem-Solving Agents",
+"overview": "A problem-solving agent is a goal-based agent that decides what to do by finding sequences of actions that lead to desirable states. When operating in fully observable, deterministic, static, and discrete environments, the agent can formulate a goal, specify a problem state space, and plan its entire sequence of actions offline before executing the first step. The search process explores hypothetical trajectories through the state space, generating a path solution that guarantees goal achievement if environmental conditions remain unchanged.",
+"key_concepts": [
+"Goal Formulation: The first step in problem solving where the agent organizes its objectives into a formal set of goal states.",
+"Problem Formulation: The process of deciding what actions and state representations to consider given a goal.",
+"State Space Abstraction: Simplifying real-world complexities into discrete mathematical states relevant to the task.",
+"Execution Phase: The process of sequentially executing the planned sequence of actions in an open-loop fashion.",
+"Search Engine: The algorithmic component that explores state transitions offline to find a valid solution path."
+],
+"algorithm_steps": [
+"Formulate a goal based on the current situation and performance metrics.",
+"Formulate the problem by defining states, initial state, actions, transition model, goal test, and path cost.",
+"Invoke a search algorithm to find a sequence of actions from the initial state to a goal state.",
+"Extract the path sequence of actions from the search solution tree.",
+"Execute the sequence of actions one by one in the environment."
+],
+"related": ["uninformed_search_overview", "informed_search_overview", "a_star_search"]
+},
+{
+"id": "uninformed_search_overview",
+"title": "Uninformed Search Strategies",
+"overview": "Uninformed search, also known as blind search, refers to search algorithms that operate without any domain-specific knowledge about the proximity or cost of reaching the goal. These algorithms can only generate successors, evaluate whether a state is a goal, and distinguish between different states. They systematically traverse the search space using state-space graph structure alone, making them general-purpose but computationally expensive in large search spaces.",
+"key_concepts": [
+"Blind Search Principle: Search operating purely on state connectivity without domain heuristics.",
+"Completeness: Property guaranteeing that an algorithm will find a solution if one exists.",
+"Time Complexity: The number of nodes generated or expanded during search measured in Big-O notation.",
+"Space Complexity: The maximum number of nodes stored in memory at any point during search.",
+"Optimality: Property ensuring the algorithm returns the solution path with the lowest cumulative path cost."
+],
+"algorithm_steps": [],
+"related": ["problem_solving_agents", "bfs", "dfs", "uniform_cost_search", "depth_limited_search", "iterative_deepening"]
+},
+{
+"id": "bfs",
+"title": "Breadth-First Search (BFS)",
+"overview": "Breadth-First Search is an uninformed search strategy in which the root node is expanded first, followed by all of its successors, and then their successors in a level-by-level fashion. It uses a First-In, First-Out (FIFO) queue for the frontier to ensure that all nodes at depth d are expanded before any nodes at depth d+1. BFS is complete and optimal when all step costs are equal, but it suffers from exponential space complexity that limits its practical applicability for deep state spaces.",
+"key_concepts": [
+"FIFO Frontier: Queue structure maintaining node expansion order by depth.",
+"Completeness: BFS is complete if the branching factor b is finite.",
+"Space Complexity: O(b^d) where b is branching factor and d is depth of the shallowest goal.",
+"Time Complexity: O(b^d) total generated nodes in the worst case.",
+"Step Cost Optimality: Optimal only when all actions have identical step costs."
+],
+"algorithm_steps": [
+"Initialize the frontier as a FIFO queue containing the initial state node.",
+"Initialize the reached set containing the initial state.",
+"If the frontier is empty, return failure.",
+"Pop the node at the front of the FIFO queue.",
+"If the node state satisfies the goal test, return the solution path.",
+"For each action available in the current node state, generate the child node.",
+"If the child state is not in the reached set, add it to the reached set and append it to the frontier.",
+"Repeat from step 3 until a solution is found or the frontier becomes empty."
+],
+"related": ["uninformed_search_overview", "dfs", "uniform_cost_search", "iterative_deepening"]
+},
+{
+"id": "dfs",
+"title": "Depth-First Search (DFS)",
+"overview": "Depth-First Search is an uninformed search algorithm that expands the deepest node in the current frontier of the search tree. It is implemented using a Last-In, First-Out (LIFO) queue or an explicit stack, causing the search to proceed immediately to the deepest level of the search tree until nodes have no successors. DFS has minimal memory requirements of O(b m) where b is branching factor and m is maximum depth, but it is incomplete in infinite state spaces and non-optimal.",
+"key_concepts": [
+"LIFO Frontier: Stack structure that forces exploration down the deepest path first.",
+"Space Efficiency: Requires only O(b m) memory where m is maximum tree depth.",
+"Incompleteness: Can get trapped in infinite paths or loops in graphs with cycles.",
+"Non-Optimality: May return a goal at a greater depth before exploring a shallower goal.",
+"Backtracking: Retracting step-by-step up the path when reaching a dead end."
+],
+"algorithm_steps": [
+"Initialize the frontier as a LIFO stack containing the initial state node.",
+"If the frontier is empty, return failure.",
+"Pop the top node from the LIFO stack.",
+"If the node state satisfies the goal test, return the solution path.",
+"If the node depth does not exceed maximum constraints, expand all valid actions.",
+"For each successor child state, push the node onto the LIFO stack if not in current path.",
+"Repeat from step 2 until a goal is found or all branches are exhausted."
+],
+"related": ["uninformed_search_overview", "bfs", "depth_limited_search", "iterative_deepening"]
+},
+{
+"id": "uniform_cost_search",
+"title": "Uniform-Cost Search (UCS)",
+"overview": "Uniform-Cost Search is an uninformed search strategy that expands the node n with the lowest path cost g(n) from the start state. It utilizes a priority queue ordered by g(n) to systematically explore state spaces with varying action step costs. UCS is complete and optimal provided that every step cost is strictly positive and greater than a small positive constant epsilon, making it equivalent to Dijkstra algorithm for search trees.",
+"key_concepts": [
+"Path Cost g(n): Cumulative path cost from initial state to node n.",
+"Priority Queue Frontier: Priority queue ordered by ascending cumulative cost g(n).",
+"Goal Test Timing: Applied when a node is selected for expansion, not when generated.",
+"Optimality: Guaranteed optimal path when step costs are strictly positive.",
+"Time and Space Complexity: O(b^(1 + floor(C* / epsilon))) where C* is optimal cost."
+],
+"algorithm_steps": [
+"Initialize the frontier as a priority queue sorted by path cost g(n) with initial node g(start) = 0.",
+"Initialize the reached set storing minimum path costs to visited states.",
+"If the frontier is empty, return failure.",
+"Pop the node with the lowest g(n) value from the priority queue.",
+"If the node state satisfies the goal test, return the solution path.",
+"For each valid action, calculate successor node child and its cost g(child) = g(parent) + step_cost.",
+"If child state is not in reached set or has a lower g(child) than recorded, update reached set and insert child into frontier.",
+"Repeat from step 3 until goal node is popped for expansion or frontier empties."
+],
+"related": ["uninformed_search_overview", "bfs", "a_star_search"]
+},
+{
+"id": "depth_limited_search",
+"title": "Depth-Limited Search",
+"overview": "Depth-Limited Search is a variation of Depth-First Search that solves the infinite path problem by imposing a fixed depth limit L on search exploration. Nodes at depth L are treated as if they have no successors, preventing the algorithm from descending indefinitely down infinite branches. While this guarantees termination, the algorithm is incomplete if the shallowest goal lies beyond depth L, and non-optimal if L is greater than the true goal depth.",
+"key_concepts": [
+"Depth Limit L: Predetermined cutoff depth beyond which nodes are not expanded.",
+"Cutoff Condition: Distinction between reaching a depth limit versus exhausting dead-end states.",
+"Space Efficiency: Maintains low space complexity of O(b L) matching standard DFS.",
+"Incompleteness Risk: Fails to find a goal if goal depth d is greater than L.",
+"Termination Guarantee: Prevents infinite loops in unbounded state spaces."
+],
+"algorithm_steps": [
+"Initialize search with initial node, goal state criteria, and limit L.",
+"If node state satisfies goal test, return the solution path.",
+"If node depth equals limit L, return cutoff signal.",
+"For each valid successor action, generate child node with depth = node.depth + 1.",
+"Recursively call Depth-Limited Search on child node with limit L.",
+"If recursive result is a solution, return it; if result is cutoff, note cutoff occurrence.",
+"If all successors return failure and no cutoff occurred, return total failure."
+],
+"related": ["dfs", "iterative_deepening", "uninformed_search_overview"]
+},
+{
+"id": "iterative_deepening",
+"title": "Iterative Deepening Search (IDS)",
+"overview": "Iterative Deepening Search combines the space efficiency of Depth-First Search with the completeness and optimality of Breadth-First Search by progressively increasing the depth limit L starting from 0, 1, 2, and so on. It executes repeated Depth-Limited Searches until a goal is found at depth d. Although nodes near the root are regenerated multiple times, the overhead is minimal because the majority of nodes in a search tree reside at the bottom level, yielding overall time complexity O(b^d) and space complexity O(b d).",
+"key_concepts": [
+"Progressive Depth Limits: Incrementing cutoff limit L sequentially from zero upwards.",
+"Memory Efficiency: Space complexity is O(b d), far superior to BFS space requirements.",
+"Completeness: Complete for finite branching factor b and finite goal depth d.",
+"Optimality: Optimal when step costs are uniform, finding shallowest goal first.",
+"Regeneration Overhead: Top level nodes regenerated d times, but total work is bounded by O(b^d)."
+],
+"algorithm_steps": [
+"Set depth limit L = 0.",
+"Invoke Depth-Limited Search with initial state, goal target, and current limit L.",
+"If Depth-Limited Search returns a valid goal solution path, return the solution.",
+"If Depth-Limited Search returns total failure without reaching cutoff, return failure.",
+"If Depth-Limited Search returns cutoff signal, increment depth limit L = L + 1.",
+"Repeat from step 2 until solution path is discovered."
+],
+"related": ["depth_limited_search", "dfs", "bfs", "uninformed_search_overview"]
+},
+{
+"id": "informed_search_overview",
+"title": "Informed (Heuristic) Search Strategies",
+"overview": "Informed search strategies utilize domain-specific knowledge beyond the state definition to evaluate and guide search towards goal states more efficiently than uninformed methods. This domain knowledge is encoded into a heuristic function h(n), which estimates the cost from node n to the nearest goal state. By prioritizing node expansion based on heuristic evaluations, informed algorithms reduce search space size and solve complex problems faster.",
+"key_concepts": [
+"Heuristic Function h(n): Domain-specific evaluation estimating remaining path cost to goal.",
+"Evaluation Function f(n): Function scoring nodes to determine expansion priority.",
+"Best-First Search Framework: Node expansion directed by priority queue sorting f(n).",
+"Pruning Search Space: Using domain heuristics to ignore unpromising search branches.",
+"Informedness: Metric comparing how closely heuristics approximate true cost."
+],
+"algorithm_steps": [],
+"related": ["greedy_best_first", "a_star_search", "heuristic_function", "admissibility"]
+},
+{
+"id": "greedy_best_first",
+"title": "Greedy Best-First Search",
+"overview": "Greedy Best-First Search is an informed search algorithm that expands the node that appears closest to the goal state according to the evaluation function f(n) = h(n). It maintains a priority queue ordered strictly by heuristic value h(n), prioritizing immediate heuristic gains. While it can reach goals rapidly in favorable search spaces, it is incomplete in cyclic graphs without graph-search memory and is non-optimal because it ignores accumulated path cost g(n).",
+"key_concepts": [
+"Evaluation Function f(n) = h(n): Selection based exclusively on estimated remaining goal cost.",
+"Greedy Behavior: Chooses local minimum h(n) without considering past path execution costs.",
+"Incompleteness: Can get stuck in loops in graph search if duplicate states are re-expanded.",
+"Non-Optimality: May return suboptimal paths if low heuristic path leads to high cost steps.",
+"Time and Space Complexity: O(b^m) worst-case time and space, where m is maximum depth."
+],
+"algorithm_steps": [
+"Initialize priority queue frontier containing initial node scored by f(start) = h(start).",
+"Initialize reached set with start state.",
+"If frontier is empty, return failure.",
+"Pop node with lowest h(n) value from priority queue.",
+"If node state satisfies goal test, return solution path.",
+"For each valid action, calculate successor child node and evaluate h(child).",
+"If child state is not in reached set, insert child into frontier and reached set.",
+"Repeat from step 3 until goal is reached or frontier empties."
+],
+"related": ["informed_search_overview", "a_star_search", "heuristic_function"]
+},
+{
+"id": "a_star_search",
+"title": "A* Search",
+"overview": "A* Search is an informed search algorithm that evaluates nodes using f(n) = g(n) + h(n), where g(n) is the exact cost incurred from the start state to node n, and h(n) is the estimated remaining cost from n to the goal state. Thus f(n) represents the estimated total cost of the path through n to the goal. A* is both complete and optimal provided that h(n) satisfies admissibility for tree search or consistency for graph search, making it one of the most widely used search strategies in artificial intelligence.",
+"key_concepts": [
+"Evaluation Function f(n) = g(n) + h(n): Balance of path cost so far and estimated remaining cost.",
+"Path Cost g(n): Actual path cost accumulated from initial state to node n.",
+"Heuristic Cost h(n): Estimated cost from node n to nearest goal state.",
+"Optimality Guarantee: Yields optimal path if heuristic is admissible or consistent.",
+"Memory Bottleneck: Stores all expanded nodes in memory, causing space complexity constraints."
+],
+"algorithm_steps": [
+"Initialize priority queue frontier sorted by f(n) = g(n) + h(n), inserting start node with g(start)=0.",
+"Initialize reached lookup table recording lowest g cost discovered for each state.",
+"If frontier is empty, return failure.",
+"Pop node n with lowest f(n) value from priority queue.",
+"If n state satisfies goal test, return solution path.",
+"For each valid successor action, generate child node with g(child) = g(n) + step_cost.",
+"Calculate f(child) = g(child) + h(child).",
+"If child state is not in reached set or g(child) is less than recorded g(child), update reached set and insert child into frontier.",
+"Repeat from step 3 until goal is expanded or frontier empties."
+],
+"related": ["informed_search_overview", "greedy_best_first", "heuristic_function", "admissibility", "uniform_cost_search"]
+},
+{
+"id": "heuristic_function",
+"title": "Heuristic Functions",
+"overview": "A heuristic function h(n) is a domain-specific function that takes a search node n as input and returns a non-negative real number estimating the cost of the cheapest path from the state of node n to a goal state. Heuristics inject problem-specific knowledge into search algorithms to guide search efficiently. They are often constructed by solving relaxed problems where constraints from the original problem are removed, allowing exact calculations of lower-bound costs.",
+"key_concepts": [
+"Definition h(n): Non-negative estimate of remaining path cost from node n to goal state.",
+"Relaxed Problem Method: Generating heuristics by dropping problem constraints.",
+"Manhattan Distance: Heuristic for grid navigation calculating sum of absolute horizontal and vertical differences.",
+"Euclidean Distance: Straight-line distance metric between spatial positions.",
+"Dominance: Heuristic h2 dominates h1 if h2(n) is greater than or equal to h1(n) for all n."
+],
+"algorithm_steps": [],
+"related": ["informed_search_overview", "a_star_search", "admissibility"]
+},
+{
+"id": "admissibility",
+"title": "Heuristic Admissibility and Consistency",
+"overview": "A heuristic h(n) is admissible if it never overestimates the true cost to reach the goal state from node n, acting as an optimistic lower bound where h(n) is less than or equal to h*(n). Consistency, or monotonicity, is a stronger property requiring that for every node n and every successor node n' generated by action a, h(n) is less than or equal to cost(n, a, n') + h(n'). Admissibility guarantees optimality in A* tree search, whereas consistency guarantees optimality in A* graph search without requiring node re-openings.",
+"key_concepts": [
+"Admissibility Condition: h(n) <= h*(n) for all nodes n, where h*(n) is true optimal remaining cost.",
+"Consistency Condition: h(n) <= cost(n, a, n') + h(n') satisfying triangle inequality.",
+"Monotonicity Effect: Ensures evaluation function f(n) non-decreases along any search path.",
+"Graph Search Optimality: Consistent heuristics prevent optimal paths from being bypassed.",
+"Trivial Heuristic h(n)=0: Admissible and consistent heuristic reducing A* to Uniform Cost Search."
+],
+"algorithm_steps": [],
+"related": ["heuristic_function", "a_star_search", "informed_search_overview"]
+},
+{
+"id": "hill_climbing",
+"title": "Hill-Climbing Search",
+"overview": "Hill-Climbing Search is a local search strategy that operates continuously in a loop, moving in the direction of increasing value or decreasing cost to find an optimal solution state. It maintains only a single current state and considers only its immediate neighbor states, storing no search tree or path history. While highly memory-efficient, standard hill-climbing frequently gets stuck on local maxima, high plateaus, and sharp ridges in the state landscape.",
+"key_concepts": [
+"Local Search Principle: Focuses on evaluating current state neighbors rather than full paths.",
+"Greedy Local Choice: Moves directly to the neighbor providing highest immediate value gain.",
+"Local Maxima Trap: Peak state higher than all neighbors but lower than global maximum.",
+"Plateau Problem: Flat region of search space where all neighboring states have identical values.",
+"Stochastic Hill-Climbing: Choosing randomly among uphill moves to vary search path."
+],
+"algorithm_steps": [
+"Initialize current state with problem initial state.",
+"Evaluate value of current state using objective function.",
+"Generate all immediate neighbor states of current state.",
+"Find neighbor state with highest objective value.",
+"If highest neighbor value is less than or equal to current state value, return current state.",
+"Set current state equal to highest neighbor state.",
+"Repeat from step 3 until no higher neighbor exists."
+],
+"related": ["simulated_annealing", "local_beam_search", "gradient_descent"]
+},
+{
+"id": "simulated_annealing",
+"title": "Simulated Annealing",
+"overview": "Simulated Annealing is a local search optimization algorithm inspired by the industrial annealing process of cooling molten metal. It avoids getting trapped in local optima by combining random walk moves with greedy hill climbing. The algorithm accepts downhill moves with a probability that decreases exponentially with the worsening magnitude of delta E and a control temperature parameter T, which cools down according to a systematic cooling schedule over time.",
+"key_concepts": [
+"Temperature Parameter T: Control variable determining probability of accepting bad moves.",
+"Acceptance Probability: Calculated as e^(delta E / T) for worsening energy moves.",
+"Cooling Schedule: Systematic reduction function lowering temperature T across iterations.",
+"Escaping Local Maxima: Allowing bad moves at high temperatures to jump out of local traps.",
+"Convergence: Approaches global optimum as temperature schedule decreases sufficiently slowly."
+],
+"algorithm_steps": [
+"Initialize current state with initial state and set initial Temperature T.",
+"For each step t according to schedule function, decrease Temperature T.",
+"If Temperature T equals 0, return current state.",
+"Pick a random neighbor state from neighbors of current state.",
+"Calculate delta E = neighbor.value - current.value.",
+"If delta E > 0 (better state), set current state equal to neighbor state.",
+"Else, accept neighbor state with probability equal to e^(delta E / T).",
+"Repeat from step 2 until cooling schedule completes."
+],
+"related": ["hill_climbing", "local_beam_search", "gradient_descent"]
+},
+{
+"id": "local_beam_search",
+"title": "Local Beam Search",
+"overview": "Local Beam Search is a local optimization search algorithm that keeps track of k states rather than a single state. It begins with k randomly generated initial states, evaluates all successors across all k states, and selects the top k best successors from the combined pool to form the next generation. Unlike executing k parallel independent hill-climbing searches, local beam search shares information across paths, concentrating search resources in regions where promising states emerge.",
+"key_concepts": [
+"State Pool K: Maintaining k active parallel search states in memory.",
+"Information Sharing: Selecting best k candidates from total combined pool of all state successors.",
+"Stochastic Beam Search: Choosing k successors probabilistically based on state values.",
+"Memory Requirements: Fixed space complexity proportional to k times state storage size.",
+"Cluster Convergence: Risk of all k states converging onto a single local peak."
+],
+"algorithm_steps": [
+"Generate k random initial states.",
+"Evaluate state objective values for all k states.",
+"If any state satisfies target goal test, return that state.",
+"Generate all successors for each of the k states.",
+"Evaluate objective values of all generated successor states.",
+"Select the k best successor states from the combined pool.",
+"Set active state pool to the selected k states.",
+"Repeat from step 3 until goal is found or max iterations reached."
+],
+"related": ["hill_climbing", "simulated_annealing", "min_conflicts"]
+},
+{
+"id": "gradient_descent",
+"title": "Gradient Descent (Local Search in Continuous Space)",
+"overview": "Gradient Descent is a local search optimization algorithm designed for continuous state spaces where objective functions are differentiable. It updates continuous state parameters by taking steps proportional to the negative gradient of the objective function at the current point, moving downhill toward local minima. The step size is controlled by a learning rate parameter alpha, where small steps guarantee smooth convergence while excessive step sizes can cause overshoot and instability.",
+"key_concepts": [
+"Continuous State Space: Problem spaces where state variables are real-valued vectors.",
+"Gradient Vector: Vector of partial derivatives pointing in direction of steepest function increase.",
+"Learning Rate Alpha: Step size scaling parameter controlling magnitude of state updates.",
+"Steepest Descent Rule: State update rule x_new = x_old - alpha * gradient(f(x_old)).",
+"Local Minima Limits: Susceptible to local minima traps in non-convex continuous functions."
+],
+"algorithm_steps": [
+"Initialize state vector x with random continuous values.",
+"Specify learning rate alpha and convergence threshold epsilon.",
+"Compute gradient vector of objective function at current state x.",
+"If magnitude of gradient is less than epsilon, terminate and return state x.",
+"Update state vector x = x - alpha * gradient.",
+"Repeat from step 3 until gradient approaches zero or step limit reached."
+],
+"related": ["hill_climbing", "simulated_annealing"]
+},
+{
+"id": "minimax",
+"title": "Minimax Algorithm",
+"overview": "The Minimax algorithm is a decision-making strategy used in two-player zero-sum games with perfect information, such as Chess or Tic-Tac-Toe. The game tree consists of MAX player nodes seeking to maximize utility, and MIN player nodes seeking to minimize MAX utility. Minimax performs a full depth-first traversal of the game tree, computing utility values at leaf terminal states and backing up optimal minimax values recursively to determine the optimal move for MAX.",
+"key_concepts": [
+"Zero-Sum Game: Competitive game where MAX gain equals MIN loss.",
+"Terminal Utility Function: Evaluation function returning numeric values at leaf game states.",
+"MAX Player Objective: Maximizing the backed-up minimax evaluation value.",
+"MIN Player Objective: Minimizing the backed-up minimax evaluation value.",
+"Game Tree Complexity: Time complexity O(b^m) where b is legal moves and m is maximum depth."
+],
+"algorithm_steps": [
+"If state is terminal, return utility value of state.",
+"If current state is MAX player turn, initialize best_value = negative infinity.",
+"For each successor action in MAX state, call Minimax on child state and set best_value = max(best_value, result).",
+"If current state is MIN player turn, initialize best_value = positive infinity.",
+"For each successor action in MIN state, call Minimax on child state and set best_value = min(best_value, result).",
+"Return best_value up the recursion tree to root node."
+],
+"related": ["alpha_beta_pruning", "problem_solving_agents"]
+},
+{
+"id": "alpha_beta_pruning",
+"title": "Alpha-Beta Pruning",
+"overview": "Alpha-Beta Pruning is an optimization technique applied to the Minimax procedure that eliminates subtrees from the game tree without altering the final minimax decision. It maintains two bounds: alpha, the best value MAX can guarantee so far, and beta, the best value MIN can guarantee so far. When a node's evaluation yields a value worse than the current alpha or beta bounds, the algorithm cuts off remaining successor evaluations, reducing time complexity in optimal move orderings to O(b^(m/2)).",
+"key_concepts": [
+"Alpha Value: Best choice value found so far along path for MAX player.",
+"Beta Value: Best choice value found so far along path for MIN player.",
+"Alpha Cutoff: Pruning remaining successors at MIN node when beta <= alpha.",
+"Beta Cutoff: Pruning remaining successors at MAX node when alpha >= beta.",
+"Move Ordering Impact: Perfect move ordering doubles effective search depth by halving exponent."
+],
+"algorithm_steps": [
+"Initialize search at root node with alpha = negative infinity and beta = positive infinity.",
+"If node is terminal, return utility score.",
+"If node is MAX turn, set v = negative infinity; for each successor, set v = max(v, Alpha-Beta(child, alpha, beta)).",
+"In MAX node, set alpha = max(alpha, v); if v >= beta, cut off remaining successors and return v.",
+"If node is MIN turn, set v = positive infinity; for each successor, set v = min(v, Alpha-Beta(child, alpha, beta)).",
+"In MIN node, set beta = min(beta, v); if v <= alpha, cut off remaining successors and return v.",
+"Return backed-up value v to parent caller."
+],
+"related": ["minimax"]
+},
+{
+"id": "csp_definition",
+"title": "Constraint Satisfaction Problem (CSP) - Definition",
+"overview": "A Constraint Satisfaction Problem (CSP) is a formal problem representation defined by a set of variables, a set of domains specifying allowed values for each variable, and a set of constraints restricting allowable combinations of variable values. Unlike state spaces where states are treated as atomic units, CSPs represent states as factored sets of variable-value assignments. A state is complete when every variable has an assigned value, and consistent when no constraints are violated; a solution is a complete and consistent assignment.",
+"key_concepts": [
+"Variables X: Finite set of variables X1 through Xn requiring assignment.",
+"Domains D: Set of allowable values Di for each variable Xi.",
+"Constraints C: Pairings of variable subsets and explicit conditions restricting legal value assignments.",
+"Factored State Representation: Expressing problems using structured variable-value pairs.",
+"Map Coloring Problem: Classic CSP assigning colors to geographic regions such that adjacent regions differ."
+],
+"algorithm_steps": [],
+"related": ["backtracking", "min_conflicts"]
+},
+{
+"id": "backtracking",
+"title": "Backtracking Search for CSP",
+"overview": "Backtracking search is a depth-first search algorithm specifically tailored for Constraint Satisfaction Problems that assigns values to one variable at a time and backtracks when a variable has no legal values remaining. By evaluating constraints incrementally after each variable assignment, backtracking eliminates large subtrees of inconsistent partial assignments early. Efficiency is further enhanced using heuristics like Minimum Remaining Values (MRV), Degree Heuristic, and Forward Checking.",
+"key_concepts": [
+"Incremental Constraint Checking: Verifying constraint consistency immediately after each variable assignment.",
+"Minimum Remaining Values (MRV): Choosing the unassigned variable with the fewest legal domain values.",
+"Degree Heuristic: Selecting the variable involved in the largest number of constraints on unassigned variables.",
+"Least Constraining Value: Choosing a domain value that leaves maximum flexibility for remaining variables.",
+"Forward Checking: Tracking domain constraints and pruning illegal values from unassigned variables after each step."
+],
+"algorithm_steps": [
+"If variable assignment is complete, return assignment solution.",
+"Select an unassigned variable Xi using selection heuristic (MRV or Degree).",
+"For each value in domain Di ordered by Least Constraining Value heuristic:",
+"If value is consistent with current assignment according to constraints C:",
+"Add variable-value pair (Xi = value) to assignment.",
+"Recursively call Backtracking Search with updated assignment.",
+"If result is not failure, return result.",
+"Remove variable-value pair (Xi = value) from assignment (backtrack).",
+"If all domain values checked without success, return failure."
+],
+"related": ["csp_definition", "min_conflicts"]
+},
+{
+"id": "min_conflicts",
+"title": "Local Search for CSP (Min-Conflicts)",
+"overview": "Min-Conflicts is a heuristic-based local search algorithm for Constraint Satisfaction Problems that operates on complete variable assignments with conflicting constraints. At each step, it randomly selects a variable currently involved in a constraint violation and reassigns it the domain value that minimizes the number of total constraint conflicts. Min-Conflicts is effective at solving massive CSP instances, such as the Million-Queens problem, in nearly constant average time.",
+"key_concepts": [
+"Iterative Repair: Modifying a complete initial state to resolve constraint violations.",
+"Conflicted Variable Selection: Target selection restricted to variables currently violating constraints.",
+"Min-Conflicts Heuristic: Choosing value that minimizes total constraint count violations.",
+"Plateau Escapes: Utilizing random walk moves or sideway steps when no conflict-reducing moves exist.",
+"N-Queens Application: Solving large N-Queens benchmarks rapidly using local variable swaps."
+],
+"algorithm_steps": [
+"Generate a complete initial assignment of values to all variables.",
+"For step iteration count up to max_steps:",
+"If assignment is consistent with all constraints, return assignment solution.",
+"Randomly select a conflicted variable Xi from set of variables violating constraints.",
+"Evaluate conflict counts for each possible domain value v in Di for variable Xi.",
+"Assign variable Xi the value v that minimizes total constraint conflicts.",
+"Repeat from step 3 until solution found or max_steps exceeded."
+],
+"related": ["csp_definition", "backtracking", "hill_climbing", "local_beam_search"]
+}
+]

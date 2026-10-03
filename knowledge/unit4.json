@@ -1,0 +1,334 @@
+[
+{
+"id": "ontological_engineering",
+"title": "Ontological Engineering",
+"overview": "Ontological Engineering involves the formal representation, design, and construction of domain knowledge structures called ontologies. It provides a shared framework for defining concepts, categories, properties, and relationships within a specific domain or across general human knowledge. By structuring knowledge into machine-readable formats, ontological engineering enables heterogeneous AI systems to share vocabulary, reason consistently, and interoperate seamlessly. Upper-level ontologies cover universal concepts such as space, time, and objects, while domain ontologies tailor these general principles to specific application areas.",
+"key_concepts": [
+"Upper Ontologies provide abstract foundational concepts like space, time, and physical entities.",
+"Domain Ontologies represent specialized knowledge structures for specific fields like medicine or finance.",
+"Taxonomies establish hierarchical relationships such as IS-A class inheritance structures.",
+"Axioms define formal constraints and logical rules governing relationships between concepts.",
+"Interoperability enables distinct AI systems to share and process information using a common schema."
+],
+"algorithm_steps": [],
+"related": [
+"categories_objects",
+"reasoning_categories",
+"events"
+]
+},
+{
+"id": "categories_objects",
+"title": "Categories and Objects",
+"overview": "In knowledge representation, categories organize individual objects into structured groups based on shared properties, enabling efficient reasoning over large domains. Rather than making assertions about every individual object, an agent can infer properties about an entire category using inheritance and membership rules. Categories are represented as unary predicates or formal sets, allowing objects to be classified as members of specific classes. Defining disjoint categories, exhaustive decompositions, and partitions helps structure domain knowledge logically without ambiguity.",
+"key_concepts": [
+"Category Membership asserts that an individual object belongs to a broader class or category.",
+"Subclasses establish inclusion hierarchies where one category is entirely contained within another.",
+"Disjoint Categories ensure that no single object can simultaneously belong to both classes.",
+"Exhaustive Decomposition guarantees that every object in a superclass belongs to at least one subclass.",
+"Partitions combine disjointness and exhaustive decomposition to form mutually exclusive coverage."
+],
+"algorithm_steps": [],
+"related": [
+"ontological_engineering",
+"reasoning_categories",
+"default_reasoning"
+]
+},
+{
+"id": "events",
+"title": "Events and Situation Calculus",
+"overview": "Representing change over time requires formal mechanisms to reason about events, actions, and their effects on the state of the world. Event calculus and situation calculus provide logical frameworks to model fluents, which are properties of the world that fluctuate over time or across state transitions. Actions trigger transitions between situations, and axioms describe how fluents change or persist after an action occurs. Addressing challenges like the frame problem ensures that unchanged aspects of the environment do not need to be explicitly declared at every timestep.",
+"key_concepts": [
+"Fluents represent world states or properties whose truth values change dynamically over time.",
+"Situations represent snapshots of the world resulting from sequences of executed actions.",
+"Effect Axioms explicitly define how specific actions alter state properties or fluents.",
+"Frame Problem addresses the challenge of representing all factors that remain unchanged after an action.",
+"Event Calculus models events occurring over continuous time intervals rather than discrete step states."
+],
+"algorithm_steps": [],
+"related": [
+"ontological_engineering",
+"mental_events_objects"
+]
+},
+{
+"id": "mental_events_objects",
+"title": "Mental Events and Mental Objects",
+"overview": "Mental events and objects allow AI agents to model the cognitive states, beliefs, goals, and intentions of themselves and other entities. Using formalisms like belief-desire-intention (BDI) architecture and epistemic logics, agents represent propositional attitudes without confusing a belief about a proposition with the proposition's actual truth value. Referential opacity ensures that substituting co-referential terms inside belief contexts does not alter the truth value of the agent's mental state. This enables multi-agent cooperation, strategic reasoning, and social intelligence.",
+"key_concepts": [
+"Propositional Attitudes represent mental stances like believes, desires, knows, or intends toward propositions.",
+"Belief-Desire-Intention Model structures rational agent behavior using informational, motivational, and goal states.",
+"Referential Opacity prevents invalid substitution of equivalent terms inside mental belief states.",
+"Epistemic Logic formalizes knowledge and belief propositions across multiple interacting agents.",
+"Metareasoning enables an AI system to inspect, evaluate, and reason about its own reasoning processes."
+],
+"algorithm_steps": [],
+"related": [
+"ontological_engineering",
+"events"
+]
+},
+{
+"id": "reasoning_categories",
+"title": "Reasoning Systems for Categories",
+"overview": "Specialized reasoning systems streamline inferences over taxonomic category hierarchies and relationships between concepts. Formalisms such as semantic networks graph concepts as nodes and relations as labeled arcs, while description logics offer precise decidable fragments of first-order logic for concept definition. Inheritance hierarchies automatically propagate properties from superclasses down to instances, minimizing redundancy. These systems allow AI engines to efficiently answer subsumption queries, check consistency, and perform automatic classification.",
+"key_concepts": [
+"Semantic Networks organize knowledge using node-and-edge graphs depicting concepts and relations.",
+"Description Logics provide formal computable logics focused on concept definitions and subsumption.",
+"Inheritance Hierarchies pass down default properties from generalized parents to specialized children.",
+"Subsumption Checking determines whether one general category is logically a subset of another.",
+"Axiomatic Classification places new instance objects into their correct location within a taxonomy."
+],
+"algorithm_steps": [],
+"related": [
+"ontological_engineering",
+"categories_objects",
+"default_reasoning"
+]
+},
+{
+"id": "default_reasoning",
+"title": "Reasoning with Default Information",
+"overview": "Default reasoning and non-monotonic logic allow AI systems to draw plausible conclusions in the absence of complete information while retaining the ability to retract inferences when new evidence arrives. Unlike classical monotonic logic where adding new premises never reduces the set of true conclusions, non-monotonic frameworks allow typical defaults (such as assuming typical birds fly) to be overridden by specific exceptions (such as learning a specific bird is a penguin). Techniques like default logic, circumscription, and closed-world assumptions formalize default rules and minimal models.",
+"key_concepts": [
+"Non-Monotonic Logic permits retracting previously derived conclusions when contradictory evidence is learned.",
+"Default Rules define typical assumptions that hold provided no explicit contradiction is present.",
+"Circumscription minimizes the extensions of predicates to assume only known exceptions exist.",
+"Closed-World Assumption presumes any fact not explicitly declared true is false by default.",
+"Frame Retraction updates belief bases by stripping invalid default inferences upon new disclosures."
+],
+"algorithm_steps": [],
+"related": [
+"categories_objects",
+"reasoning_categories"
+]
+},
+{
+"id": "voice_recognition",
+"title": "Voice Recognition",
+"overview": "Voice recognition, or automatic speech recognition, converts acoustic speech signals into written textual representations through a multi-stage signal processing pipeline. The raw audio waveform is digitized, framed, and processed to extract discriminative spectral features like Mel-Frequency Cepstral Coefficients (MFCCs). Acoustic models evaluate the probability of acoustic features given phoneme units, while language models estimate the likelihood of phoneme and word sequences. Decoding algorithms merge acoustic and language model probabilities to determine the most probable spoken transcription.",
+"key_concepts": [
+"Mel-Frequency Cepstral Coefficients extract human-perceptual frequency features from framed audio signals.",
+"Acoustic Modeling maps extracted audio feature frames to basic phonetic or phoneme probability distributions.",
+"Language Modeling estimates probability distributions over sequences of words to resolve phonetic ambiguities.",
+"Acoustic Preprocessing filters background noise and normalizes signal amplitudes prior to feature extraction.",
+"Viterbi Decoding efficiently searches the search space of acoustic and language combinations for top candidate phrases."
+],
+"algorithm_steps": [
+"Step 1: Capture continuous raw acoustic sound waves via microphone and digitize the signal through analog-to-digital conversion.",
+"Step 2: Pre-emphasize high frequencies, apply windowing functions, and divide the audio signal into short overlapping time frames.",
+"Step 3: Compute the Discrete Fourier Transform for each frame to convert time-domain signals into frequency spectra.",
+"Step 4: Map spectral power onto the Mel-scale and apply the Discrete Cosine Transform to produce Mel-Frequency Cepstral Coefficients.",
+"Step 5: Pass feature vectors through acoustic models to predict frame-level phoneme class probabilities.",
+"Step 6: Combine acoustic scores with language model sequence probabilities using search algorithms like Viterbi decoding to generate final text output."
+],
+"related": [
+"pattern_recognition",
+"sequential_pattern_recognition"
+]
+},
+{
+"id": "face_recognition",
+"title": "Face Recognition",
+"overview": "Face recognition is a biometric computer vision pipeline that detects human faces in images, normalizes their spatial alignment, extracts facial embeddings, and compares them against database identities. Facial detection algorithms locate bounding regions containing faces, followed by landmark estimation to align eyes, nose, and mouth positions. Feature extraction transforms aligned images into compact vector representations using techniques like Eigenfaces, Fisherfaces, or deep convolutional embeddings. Finally, vector distances or similarity classifiers match extracted embeddings against known gallery profiles.",
+"key_concepts": [
+"Face Detection locates spatial bounding box coordinates surrounding human faces within an image.",
+"Facial Alignment rotates and scales detected faces based on canonical eye and facial landmark coordinates.",
+"Eigenfaces uses principal component analysis to represent face images using low-dimensional linear combinations.",
+"Deep Facial Embeddings maps facial features into metric vector spaces where distances correspond to identity differences.",
+"Metric Matching evaluates cosine distance or Euclidean distance between query vectors and target gallery templates."
+],
+"algorithm_steps": [
+"Step 1: Process input image through a face detection detector to isolate rectangular face regions.",
+"Step 2: Detect key facial landmark coordinates such as eyes, nose tip, and mouth corners within detected regions.",
+"Step 3: Apply affine geometric transformations to align and scale the face image into standard canonical orientations.",
+"Step 4: Perform pixel intensity normalization and lighting correction across the cropped face patch.",
+"Step 5: Extract high-level visual features or compute deep neural network embeddings to generate a fixed-length vector.",
+"Step 6: Calculate Euclidean or cosine distance between query feature vector and stored gallery identity vectors.",
+"Step 7: Apply a distance threshold or nearest-neighbor classifier to output identity predictions or verification decisions."
+],
+"related": [
+"pattern_recognition",
+"object_recognition_appearance",
+"image_recognition"
+]
+},
+{
+"id": "handwriting_recognition",
+"title": "Handwriting Recognition",
+"overview": "Handwriting recognition parses handwritten text from optical images (offline recognition) or stroke trajectory data (online recognition) into machine-readable character strings. Offline pipelines clean background noise, binarize images, segment lines and character regions, and extract morphological or structural features. Online systems capture spatial-temporal coordinate paths recorded from touch interfaces or digital pens. Sequence classifiers or recurrent neural networks parse spatial features to decode character sequences into recognized text strings.",
+"key_concepts": [
+"Offline Recognition extracts text from static flat images of handwritten documents.",
+"Online Recognition records dynamic temporal coordinates, stroke direction, and velocity data during writing.",
+"Binarization converts grayscale or color document scans into binary black-and-white mask representations.",
+"Character Segmentation separates continuous handwriting into discrete lines, words, or individual glyph regions.",
+"Sequence Decoding maps feature sequences to text outputs using language context constraints."
+],
+"algorithm_steps": [
+"Step 1: Acquire handwriting data as optical image scans for offline recognition or stroke coordinate streams for online recognition.",
+"Step 2: Preprocess inputs using noise filtering, binarization, skew correction, and stroke thinning operations.",
+"Step 3: Segment document regions into individual text line blocks, word patches, or character candidates.",
+"Step 4: Extract structural features like loops, stroke junctions, direction vectors, or deep visual representations.",
+"Step 5: Feed feature sequences into classification models such as Support Vector Machines, Hidden Markov Models, or recurrent networks.",
+"Step 6: Apply language model decoding rules to correct classification errors and output finalized text transcripts."
+],
+"related": [
+"pattern_recognition",
+"sequential_pattern_recognition",
+"image_segmentation"
+]
+},
+{
+"id": "pattern_recognition",
+"title": "Pattern Recognition",
+"overview": "Pattern recognition is the scientific discipline concerned with automatically discovering regularities, structures, and statistical trends in raw data to assign inputs into distinct categories. Raw inputs are mapped into high-dimensional feature spaces where decision boundaries separate different target classes. The learning process relies on supervised methods using labeled training datasets, unsupervised techniques that discover latent clusters, or reinforcement paradigms. Effective pattern recognition balances model complexity with generalization capacity to avoid overfitting.",
+"key_concepts": [
+"Feature Vectors encapsulate measurable properties of an input object as ordered numerical sequences.",
+"Decision Boundaries represent hyperplanes or surfaces in feature space separating distinct target classes.",
+"Supervised Learning trains classification models using input-output paired examples with ground truth labels.",
+"Unsupervised Clustering groups unlabeled data points based on feature similarity metrics.",
+"Overfitting occurs when models memorize training patterns instead of learning generalizable decision rules."
+],
+"algorithm_steps": [
+"Step 1: Collect and clean raw observational data samples representative of the problem domain.",
+"Step 2: Preprocess samples using normalization, scaling, and artifact filtering techniques.",
+"Step 3: Extract informative feature vectors while applying dimensionality reduction to eliminate irrelevant attributes.",
+"Step 4: Train classification or clustering algorithms on extracted feature representations.",
+"Step 5: Optimize model parameters using loss functions and validation subsets.",
+"Step 6: Evaluate generalizable model performance on unseen test datasets using metrics like accuracy and precision."
+],
+"related": [
+"sequential_pattern_recognition",
+"object_recognition_appearance",
+"image_recognition"
+]
+},
+{
+"id": "sequential_pattern_recognition",
+"title": "Sequential Pattern Recognition",
+"overview": "Sequential pattern recognition handles ordered streams of data where temporal, ordinal, or structural sequences carry critical context, such as speech, dynamic gestures, or DNA sequences. Unlike static pattern recognition, models must capture dependencies between neighboring observations over time. Hidden Markov Models (HMMs) model observed dynamic sequences using latent unobserved states, while Dynamic Time Warping (DTW) measures similarity between time series of varying lengths. Deep temporal models like recurrent networks further enhance continuous sequence modeling.",
+"key_concepts": [
+"Time Series Sequences represent data points indexed in temporal order where sequence order dictates meaning.",
+"Hidden Markov Models represent stochastic systems with unobserved latent states generating observed sequences.",
+"Dynamic Time Warping stretches or compresses time series non-linearly to measure alignment similarity.",
+"Transition Probabilities quantify the likelihood of moving from one latent state to another over time.",
+"Viterbi Decoding finds the single most likely sequence of hidden states that generated an observed sequence."
+],
+"algorithm_steps": [
+"Step 1: Acquire time-series or sequential observation data from dynamic sensors, audio frames, or text streams.",
+"Step 2: Segment long continuous sequences into discrete processing windows or aligned sequence frames.",
+"Step 3: Extract time-localized feature vectors from each consecutive window step.",
+"Step 4: Align sequences against candidate template patterns using Dynamic Time Warping or initialize Hidden Markov Model state transition networks.",
+"Step 5: Compute state transition and observation emission probabilities for candidate dynamic models.",
+"Step 6: Decode optimal state path sequences using the Viterbi algorithm to assign final temporal class labels."
+],
+"related": [
+"pattern_recognition",
+"voice_recognition",
+"handwriting_recognition"
+]
+},
+{
+"id": "object_recognition_appearance",
+"title": "Object Recognition by Appearance",
+"overview": "Appearance-based object recognition identifies target objects directly from two-dimensional image patterns and visual properties without constructing explicit three-dimensional geometric shape models. Methods rely on extracting global appearance descriptors like color histograms or local keypoint features like Scale-Invariant Feature Transform (SIFT) and Histogram of Oriented Gradients (HOG). By matching feature distributions across scale, rotation, and illumination changes, systems locate and identify objects under clutter. This approach contrasts with geometric model-based recognition by prioritizing photometric data.",
+"key_concepts": [
+"Appearance-Based Representations describe objects via two-dimensional visual properties rather than three-dimensional CAD geometry.",
+"Scale-Invariant Feature Transform detects local scale-invariant keypoints and generates robust gradient descriptors.",
+"Histogram of Oriented Gradients counts occurrences of edge orientations in localized portions of an image.",
+"Photometric Invariance maintains consistent recognition performance despite illumination and contrast changes.",
+"Visual Bag-of-Words aggregates local keypoint descriptors into global frequency histograms for matching."
+],
+"algorithm_steps": [
+"Step 1: Capture input image and convert to standardized color spaces or grayscale representations.",
+"Step 2: Detect salient interest points or define dense spatial grids across candidate image regions.",
+"Step 3: Compute local feature descriptors such as SIFT or HOG around each interest point keypoint.",
+"Step 4: Vectorize local descriptors into visual vocabulary codewords or global spatial appearance histograms.",
+"Step 5: Compare query appearance descriptors against stored object model descriptors using distance metrics or classifiers.",
+"Step 6: Output predicted object class categories along with localized spatial bounding boxes."
+],
+"related": [
+"pattern_recognition",
+"image_recognition",
+"face_recognition"
+]
+},
+{
+"id": "image_recognition",
+"title": "Image Recognition",
+"overview": "Image recognition encompasses the full visual processing end-to-end pipeline that takes raw digital pixel arrays and outputs categorical labels or semantic interpretations. The process starts with Low-level vision operations like noise reduction and contrast adjustment, transitions through mid-level vision tasks like segmentation and feature extraction, and completes at high-level reasoning modules. Modern image recognition leverages convolutional neural networks or classical feature pipelines to achieve translation, scale, and occlusion invariant object categorization across real-world scenes.",
+"key_concepts": [
+"Pixel Array Inputs represent raw color or intensity grids captured by digital image sensors.",
+"Preprocessing enhances visual quality via illumination normalization, resizing, and noise reduction.",
+"Feature Representation abstracts pixel arrays into semantic visual features or convolutional embeddings.",
+"Classification Networks evaluate extracted features to assign confidence scores across target categories.",
+"Invariance guarantees reliable recognition despite translation, rotation, scale, and lighting changes."
+],
+"algorithm_steps": [
+"Step 1: Acquire digital pixel matrix image input from camera sensors or image repositories.",
+"Step 2: Apply image preprocessing methods including resizing, color space conversion, and noise filtering.",
+"Step 3: Perform image segmentation or region-of-interest detection to focus processing on candidate objects.",
+"Step 4: Extract visual feature vectors using handcrafted feature extractors or deep convolutional layers.",
+"Step 5: Pass feature vectors through classification heads such as softmax layers or Support Vector Machines.",
+"Step 6: Rank category confidence scores and output class predictions with corresponding confidence metrics."
+],
+"related": [
+"image_segmentation",
+"morphological_processing",
+"object_recognition_appearance",
+"pattern_recognition"
+]
+},
+{
+"id": "image_segmentation",
+"title": "Image Segmentation",
+"overview": "Image segmentation partitions a digital image into multiple distinct, non-overlapping regions or sets of pixels sharing similar visual characteristics like intensity, color, or texture. The goal is to simplify or transform image representations into meaningful entities that are easier to analyze for downstream visual tasks. Common approaches include thresholding based on pixel intensity histograms, edge-based detection locating sharp intensity discontinuities, region growing based on homogeneity criteria, and pixel clustering methods like K-means or graph-based cuts.",
+"key_concepts": [
+"Intensity Thresholding separates foreground from background based on pixel value cutoffs.",
+"Edge Detection identifies sharp boundaries where pixel color or intensity changes abruptly.",
+"Region Growing groups neighboring pixels together based on predefined similarity criteria.",
+"Clustering-Based Segmentation groups pixels in feature space using algorithms like K-means.",
+"Semantic Segmentation assigns specific class labels to every individual pixel within an image."
+],
+"algorithm_steps": [
+"Step 1: Receive raw input image and smooth using Gaussian filters to reduce high-frequency noise.",
+"Step 2: Calculate image gradient magnitudes or build intensity histogram representations.",
+"Step 3: Select segmentation strategy such as global thresholding, edge filtering, or seed point selection.",
+"Step 4: Group adjacent pixels meeting similarity criteria or separate region boundaries along gradient peaks.",
+"Step 5: Refine initial segment boundaries using morphological smoothing or watershed algorithms.",
+"Step 6: Assign unique region identifiers or semantic category masks to each isolated segment group."
+],
+"related": [
+"image_recognition",
+"morphological_processing",
+"object_recognition_appearance"
+]
+},
+{
+"id": "morphological_processing",
+"title": "Morphological Image Processing",
+"overview": "Morphological image processing provides a mathematical collection of non-linear operations based on set theory that modify spatial structures and shapes within binary or grayscale images. Operations evaluate images using small probe shapes called structuring elements, positioning them across all pixel locations to analyze local neighborhood shapes. Primary operations include erosion (which shrinks foreground regions) and dilation (which expands foreground boundaries). Combining erosion and dilation yields compound operations like opening (which removes small noise points) and closing (which fills holes and gaps).",
+"key_concepts": [
+"Structuring Elements define probe shape matrices used to evaluate local pixel neighborhoods.",
+"Erosion strips away boundary pixels of foreground regions, shrinking objects and removing small noise.",
+"Dilation adds pixels to foreground object boundaries, expanding regions and filling internal gaps.",
+"Opening performs an erosion followed by dilation to eliminate background noise and isolate objects.",
+"Closing performs a dilation followed by erosion to seal small holes, cracks, and bridge breaks."
+],
+"algorithm_steps": [
+"Step 1: Convert input image into a binary image mask using intensity thresholding.",
+"Step 2: Define shape, dimensions, and origin point of the kernel structuring element.",
+"Step 3: Slide structuring element across every target pixel coordinate in the binary image.",
+"Step 4: Apply Erosion by setting target pixels to foreground only if structuring element fits completely within foreground.",
+"Step 5: Apply Dilation by setting target pixels to foreground if structuring element hits any foreground pixel.",
+"Step 6: Combine operations sequentially to execute compound opening or closing routines based on structural objectives.",
+"Step 7: Output processed binary mask with cleaned structures, filled holes, or isolated shapes."
+],
+"related": [
+"image_segmentation",
+"image_recognition",
+"handwriting_recognition"
+]
+}
+]
