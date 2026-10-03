@@ -1,28 +1,25 @@
 /**
- * chatbot.js - Core Chat Logic & Processing Module
- * Handles input normalization, rule matching, response construction, and bubble rendering.
+ * chatbot.js - Core Chat Logic & Typing Animation Controller
+ * Handles user input processing, assistant typing animation, and message bubble creation.
  */
 
 /**
- * Normalizes user input string:
- * Converts to lower case, trims whitespace, removes non-alphanumeric punctuation
- * except internal word hyphens.
- * @param {string} rawInput - The raw query from the user.
- * @returns {string} - Clean normalized query string.
+ * Normalizes user input string: lowercases, trims, strips punctuation except hyphens.
+ * @param {string} rawInput - Raw input text.
+ * @returns {string} - Clean normalized query.
  */
 function normalizeInput(rawInput) {
   if (!rawInput) return '';
   return rawInput
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-]/g, ' ') // replace punctuation with spaces
-    .replace(/\s+/g, ' ');     // collapse whitespace
+    .replace(/[^\w\s-]/g, ' ')
+    .replace(/\s+/g, ' ');
 }
 
 /**
- * Main chat processing function.
- * Evaluates raw query against rules, retrieves topic from Knowledge Base,
- * and appends user + assistant message bubbles.
+ * Main chat handler. Appends user message, shows typing indicator,
+ * evaluates rule engine, and reveals assistant response with typing animation.
  * @param {string} userQuery - Text submitted by user.
  */
 function processUserMessage(userQuery) {
@@ -31,16 +28,16 @@ function processUserMessage(userQuery) {
   const chatWindow = document.getElementById('chat-window');
   if (!chatWindow) return;
 
-  // Remove welcome box if present on first message
-  const welcomeBox = chatWindow.querySelector('.chat-welcome-box');
-  if (welcomeBox) {
-    welcomeBox.remove();
-  }
-
-  // 1. Render User Message Bubble
+  // 1. Immediately append User Bubble
   appendUserBubble(userQuery, chatWindow);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
 
-  // 2. Process Query through Rule Engine
+  // 2. Append Assistant Typing Indicator Bubble
+  const typingIndicatorBubble = createTypingIndicatorBubble();
+  chatWindow.appendChild(typingIndicatorBubble);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+
+  // 3. Evaluate Rule Engine & KB Lookup
   const normalized = normalizeInput(userQuery);
   const matchedTopicId = matchRule(normalized);
 
@@ -56,95 +53,169 @@ function processUserMessage(userQuery) {
     responseHTML = buildFallbackResponse(userQuery);
   }
 
-  // 3. Render Assistant Message Bubble
-  appendAssistantBubble(responseHTML, chatWindow);
+  // 4. Delay briefly to simulate thought, then swap indicator with assistant response
+  setTimeout(() => {
+    // Remove typing indicator
+    if (typingIndicatorBubble && typingIndicatorBubble.parentNode) {
+      typingIndicatorBubble.parentNode.removeChild(typingIndicatorBubble);
+    }
 
-  // 4. Auto scroll chat window to bottom
-  chatWindow.scrollTop = chatWindow.scrollHeight;
+    // Append Assistant Response Bubble
+    const assistantBubble = document.createElement('div');
+    assistantBubble.className = 'chat-message assistant';
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'bubble-content';
+    contentDiv.innerHTML = responseHTML;
+
+    assistantBubble.appendChild(contentDiv);
+    chatWindow.appendChild(assistantBubble);
+
+    // Attach click listeners to chips inside bubble
+    attachBubbleChipListeners(contentDiv);
+
+    // Run Typing Reveal Animation on Assistant Text
+    animateTypingReveal(contentDiv, () => {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    });
+
+  }, 450);
 }
 
 /**
- * Appends a user message bubble (Right aligned, Blue) to chat window.
+ * Appends User message bubble (Terracotta, right aligned).
  * @param {string} text - User message string.
  * @param {HTMLElement} container - Chat window element.
  */
 function appendUserBubble(text, container) {
   const msgDiv = document.createElement('div');
   msgDiv.className = 'chat-message user';
-  
+
   const contentDiv = document.createElement('div');
   contentDiv.className = 'bubble-content';
   contentDiv.textContent = text;
-  
+
   msgDiv.appendChild(contentDiv);
   container.appendChild(msgDiv);
 }
 
 /**
- * Appends an assistant message bubble (Left aligned, Dark Gray with AI header) to chat window.
- * @param {string} htmlContent - Formatted HTML content string.
- * @param {HTMLElement} container - Chat window element.
+ * Creates a typing indicator element with three animated bouncing dots.
+ * @returns {HTMLElement} - Typing indicator container.
  */
-function appendAssistantBubble(htmlContent, container) {
+function createTypingIndicatorBubble() {
   const msgDiv = document.createElement('div');
   msgDiv.className = 'chat-message assistant';
 
-  const contentDiv = document.createElement('div');
-  contentDiv.className = 'bubble-content';
+  const indicatorDiv = document.createElement('div');
+  indicatorDiv.className = 'typing-indicator';
+  indicatorDiv.innerHTML = `
+    <span class="typing-dot"></span>
+    <span class="typing-dot"></span>
+    <span class="typing-dot"></span>
+  `;
 
-  const headerDiv = document.createElement('div');
-  headerDiv.className = 'assistant-header';
-  headerDiv.innerHTML = '<span class="brand-icon">✦</span> AI Knowledge Assistant';
-
-  const bodyDiv = document.createElement('div');
-  bodyDiv.innerHTML = htmlContent;
-
-  contentDiv.appendChild(headerDiv);
-  contentDiv.appendChild(bodyDiv);
-  msgDiv.appendChild(contentDiv);
-
-  container.appendChild(msgDiv);
-
-  // Attach event listeners to any chips rendered inside this bubble
-  attachBubbleChipListeners(contentDiv);
+  msgDiv.appendChild(indicatorDiv);
+  return msgDiv;
 }
 
 /**
- * Binds click events to chip buttons inside an assistant message bubble.
- * Allows clicking related topics or fallback suggestions to trigger new queries.
- * @param {HTMLElement} bubbleElement - The assistant bubble container.
+ * Progressively reveals text nodes in an element to simulate a typing effect.
+ * Preserves all HTML structure and formatting.
+ * @param {HTMLElement} container - Container holding response HTML.
+ * @param {Function} onComplete - Callback when typing completes.
+ */
+function animateTypingReveal(container, onComplete) {
+  const chatWindow = document.getElementById('chat-window');
+
+  // Collect text nodes excluding the related topics container
+  const textNodes = [];
+  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(node) {
+      if (node.parentElement && node.parentElement.closest('.related-container')) {
+        return NodeFilter.FILTER_REJECT;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+
+  let currentNode;
+  while (currentNode = walker.nextNode()) {
+    if (currentNode.nodeValue.trim().length > 0) {
+      textNodes.push({
+        node: currentNode,
+        fullText: currentNode.nodeValue
+      });
+      currentNode.nodeValue = ''; // Clear text initially
+    }
+  }
+
+  // If no text nodes, immediately reveal related container
+  if (textNodes.length === 0) {
+    revealRelatedContainer();
+    if (onComplete) onComplete();
+    return;
+  }
+
+  let nodeIndex = 0;
+  let charIndex = 0;
+  const charsPerTick = 2; // Speed: ~25 characters per second
+
+  const typingTimer = setInterval(() => {
+    if (nodeIndex >= textNodes.length) {
+      clearInterval(typingTimer);
+      revealRelatedContainer();
+      if (onComplete) onComplete();
+      return;
+    }
+
+    const currentItem = textNodes[nodeIndex];
+    charIndex += charsPerTick;
+
+    if (charIndex >= currentItem.fullText.length) {
+      currentItem.node.nodeValue = currentItem.fullText;
+      nodeIndex++;
+      charIndex = 0;
+    } else {
+      currentItem.node.nodeValue = currentItem.fullText.substring(0, charIndex);
+    }
+
+    if (chatWindow) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+  }, 20);
+
+  function revealRelatedContainer() {
+    const relatedElem = container.querySelector('.related-container');
+    if (relatedElem) {
+      relatedElem.classList.add('visible');
+    }
+    if (chatWindow) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+  }
+}
+
+/**
+ * Binds click events to related chips and fallback buttons inside assistant bubbles.
+ * @param {HTMLElement} bubbleElement - Assistant bubble DOM element.
  */
 function attachBubbleChipListeners(bubbleElement) {
-  // Related topic chips (data-topicid)
   const relatedChips = bubbleElement.querySelectorAll('.related-chip');
   relatedChips.forEach(chip => {
     chip.addEventListener('click', (e) => {
       e.preventDefault();
       const topicId = chip.getAttribute('data-topicid');
-      const topicObj = findTopicById(topicId);
-      const queryText = topicObj ? topicObj.title : chip.textContent.replace('🔗 ', '');
-      processUserMessage(queryText);
-    });
-  });
+      const queryAttr = chip.getAttribute('data-query');
 
-  // Fallback suggestion chips (data-query)
-  const fallbackChips = bubbleElement.querySelectorAll('.fallback-chip');
-  fallbackChips.forEach(chip => {
-    chip.addEventListener('click', (e) => {
-      e.preventDefault();
-      const queryText = chip.getAttribute('data-query');
-      processUserMessage(queryText);
-    });
-  });
-
-  // Fallback nav links (data-nav)
-  const fallbackNavLinks = bubbleElement.querySelectorAll('.fallback-link');
-  fallbackNavLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetPage = link.getAttribute('data-nav');
-      if (typeof showPage === 'function') {
-        showPage(targetPage);
+      if (topicId) {
+        const topicObj = findTopicById(topicId);
+        const queryText = topicObj ? topicObj.title : chip.textContent.trim();
+        processUserMessage(queryText);
+      } else if (queryAttr) {
+        processUserMessage(queryAttr);
+      } else {
+        processUserMessage(chip.textContent.trim());
       }
     });
   });

@@ -1,20 +1,20 @@
 /**
- * responses.js - Response Builder & Sanitizer for AI Knowledge Assistant
- * Formats JSON topic objects into structured HTML for display.
+ * responses.js - Response Builder & Sanitizer
+ * Formats JSON topic objects into structured HTML without emojis or headers.
  */
 
 /**
- * Sanitizes input strings from knowledge base JSON files.
- * Replaces LaTeX math notation and raw symbols with readable plain text.
- * @param {string} str - Raw string from JSON.
- * @returns {string} - Cleaned and formatted string.
+ * Sanitizes raw text strings from JSON knowledge base files.
+ * Replaces math symbols, backslashes, and dollar signs with clean plain text.
+ * @param {string} str - Raw string.
+ * @returns {string} - Sanitized clean string.
  */
 function sanitizeString(str) {
   if (typeof str !== 'string') return '';
 
   let clean = str;
 
-  // Pattern replacements as per Step 5 specification
+  // Replace LaTeX and logic notation with plain English
   clean = clean.replace(/ → /g, ' to ');
   clean = clean.replace(/->/g, ' to ');
   clean = clean.replace(/=>/g, ' implies ');
@@ -24,22 +24,22 @@ function sanitizeString(str) {
   clean = clean.replace(/¬/g, ' NOT ');
   clean = clean.replace(/∀/g, ' For all ');
   clean = clean.replace(/∃/g, ' There exists ');
-  clean = clean.replace(/\$/g, ''); // Strip dollar signs
-  clean = clean.replace(/\\/g, ''); // Strip backslashes
+  clean = clean.replace(/\$/g, '');
+  clean = clean.replace(/\\/g, '');
 
-  // Additional LaTeX symbol cleaning if any remain
+  // Strip residual LaTeX commands if present
   clean = clean.replace(/\\to/g, ' to ');
   clean = clean.replace(/\\in/g, ' in ');
 
-  // Collapse multiple spaces into a single space and trim
+  // Collapse extra spaces and trim
   clean = clean.replace(/\s+/g, ' ').trim();
 
   return clean;
 }
 
 /**
- * Formats a topic object into structured HTML for the Assistant chat bubble or detail view.
- * @param {Object} topic - The topic object from knowledge base.
+ * Builds formatted HTML for a topic object.
+ * @param {Object} topic - Topic object from JSON.
  * @returns {string} - Formatted HTML string.
  */
 function buildTopicResponse(topic) {
@@ -47,8 +47,8 @@ function buildTopicResponse(topic) {
 
   const title = sanitizeString(topic.title);
   const overview = sanitizeString(topic.overview);
-  
-  // Format Key Concepts list
+
+  // Key Concepts List
   let conceptsHTML = '';
   if (topic.key_concepts && topic.key_concepts.length > 0) {
     const listItems = topic.key_concepts
@@ -60,7 +60,7 @@ function buildTopicResponse(topic) {
     `;
   }
 
-  // Format Algorithm Steps list (if present and non-empty)
+  // Algorithm Steps List
   let stepsHTML = '';
   if (topic.algorithm_steps && topic.algorithm_steps.length > 0) {
     const stepItems = topic.algorithm_steps
@@ -72,22 +72,21 @@ function buildTopicResponse(topic) {
     `;
   }
 
-  // Format Related Topics as clickable chip buttons
+  // Related Topics Chips (No emojis, clean text)
   let relatedHTML = '';
   if (topic.related && topic.related.length > 0) {
     const chipButtons = topic.related
       .map(relId => {
-        // Find title for related topic if accessible, else use formatted ID
         const relTopic = findTopicById(relId);
         const displayLabel = relTopic ? relTopic.title : relId.replace(/_/g, ' ');
-        return `<button class="chip related-chip" data-topicid="${relId}" title="Query ${displayLabel}">🔗 ${sanitizeString(displayLabel)}</button>`;
+        return `<button class="related-chip" data-topicid="${relId}">${sanitizeString(displayLabel)}</button>`;
       })
       .join(' ');
 
     relatedHTML = `
       <div class="related-container">
-        <div class="related-title">Related Syllabus Topics:</div>
-        <div class="chips-grid">${chipButtons}</div>
+        <div class="related-title">Related Topics:</div>
+        <div class="related-chips-grid">${chipButtons}</div>
       </div>
     `;
   }
@@ -104,34 +103,33 @@ function buildTopicResponse(topic) {
 }
 
 /**
- * Builds a friendly fallback response when a query is not recognized.
- * @param {string} rawQuery - The user's original query string.
- * @returns {string} - Formatted fallback HTML.
+ * Builds clean fallback HTML when no rule matches.
+ * @param {string} rawQuery - Original user input.
+ * @returns {string} - Fallback HTML string.
  */
 function buildFallbackResponse(rawQuery) {
   const queryText = rawQuery ? `"${sanitizeString(rawQuery)}"` : 'that topic';
-  
+
   return `
     <div class="formatted-response fallback-response">
-      <h3>Topic Not Found in Knowledge Base</h3>
-      <p class="overview">I couldn't find a direct match for ${queryText} in the 22UAD301 syllabus knowledge base.</p>
+      <h3>Topic Not Found</h3>
+      <p class="overview">I couldn't find a direct match for ${queryText} in the knowledge base.</p>
       
-      <div class="section-title">Suggestions to find your answer:</div>
+      <div class="section-title">Suggestions:</div>
       <ul>
-        <li>Try rephrasing your question using standard textbook terms (e.g., <strong>"A* search"</strong>, <strong>"PEAS"</strong>, <strong>"Minimax"</strong>, <strong>"Resolution"</strong>).</li>
-        <li>Use the <strong><a href="#" class="fallback-link" data-nav="search">🔎 Search Topics</a></strong> page to scan all 5 units by keyword.</li>
-        <li>Browse syllabus topics directly on the <strong><a href="#" class="fallback-link" data-nav="explore">📚 Explore Units</a></strong> page.</li>
+        <li>Try rephrasing your question using standard terms like <strong>A* search</strong>, <strong>PEAS</strong>, <strong>Minimax</strong>, <strong>Resolution</strong>, or <strong>Expert Systems</strong>.</li>
+        <li>Click one of the suggested prompts below or select a related topic.</li>
       </ul>
 
       <div class="related-container">
-        <div class="related-title">Try asking about one of these popular topics:</div>
-        <div class="chips-grid">
-          <button class="chip fallback-chip" data-query="What is A* search?">🔗 A* Search</button>
-          <button class="chip fallback-chip" data-query="Explain PEAS framework">🔗 PEAS Framework</button>
-          <button class="chip fallback-chip" data-query="What is Alpha-Beta Pruning?">🔗 Alpha-Beta Pruning</button>
-          <button class="chip fallback-chip" data-query="Explain Unification algorithm">🔗 Unification</button>
-          <button class="chip fallback-chip" data-query="What is Speech Recognition?">🔗 Speech Recognition</button>
-          <button class="chip fallback-chip" data-query="Explain Expert Systems">🔗 Expert Systems</button>
+        <div class="related-title">Popular topics you can ask about:</div>
+        <div class="related-chips-grid">
+          <button class="related-chip fallback-query-chip" data-query="What is A* search?">A* Search</button>
+          <button class="related-chip fallback-query-chip" data-query="Explain PEAS framework">PEAS Framework</button>
+          <button class="related-chip fallback-query-chip" data-query="What is Alpha-Beta Pruning?">Alpha-Beta Pruning</button>
+          <button class="related-chip fallback-query-chip" data-query="Explain Unification algorithm">Unification</button>
+          <button class="related-chip fallback-query-chip" data-query="What is Speech Recognition?">Speech Recognition</button>
+          <button class="related-chip fallback-query-chip" data-query="Explain Expert Systems">Expert Systems</button>
         </div>
       </div>
     </div>
@@ -139,9 +137,8 @@ function buildFallbackResponse(rawQuery) {
 }
 
 /**
- * Helper function to look up a topic object by ID across all loaded units.
- * Note: Window.knowledgeBase is initialized in app.js.
- * @param {string} topicId - The ID of the topic.
+ * Looks up a topic object by ID across loaded units.
+ * @param {string} topicId - Topic ID string.
  * @returns {Object|null} - Topic object or null.
  */
 function findTopicById(topicId) {
