@@ -84,6 +84,6 @@ Then visit `http://localhost:8000` in your web browser.
 ## 🌐 Live GitHub Pages Deployment
 
 The application is deployed live on GitHub Pages:
-[https://Vipin28.github.io/AI-Knowledge-Assistant/]((https://vipin280720081157-08.github.io/AI-Knowledge-Assistant/))
+[https://vipin28.github.io/AI-Knowledge-Assistant/](https://vipin280720081157-08.github.io/AI-Knowledge-Assistant/)
 
 ---
