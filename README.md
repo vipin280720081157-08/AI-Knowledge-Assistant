@@ -1,6 +1,5 @@
 # AI Knowledge Assistant: A Knowledge-Based Learning and Reasoning System
 
-Academic Lab Project for the subject **"Artificial Intelligence Techniques and Algorithms" (Course Code: 22UAD301)**.
 
 ---
 
@@ -85,12 +84,6 @@ Then visit `http://localhost:8000` in your web browser.
 ## 🌐 Live GitHub Pages Deployment
 
 The application is deployed live on GitHub Pages:
-[https://Vipin28.github.io/AI-Knowledge-Assistant/](https://Vipin28.github.io/AI-Knowledge-Assistant/)
+[https://Vipin28.github.io/AI-Knowledge-Assistant/]([https://Vipin28.github.io/AI-Knowledge-Assistant/](https://vipin280720081157-08.github.io/AI-Knowledge-Assistant/))
 
 ---
-
-## 📄 License & Course Information
-
-- **Course:** Artificial Intelligence Techniques and Algorithms (22UAD301)
-- **Author:** Vipin (`Vipin28`)
-- **License:** Open Academic / Educational License
